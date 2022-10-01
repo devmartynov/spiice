@@ -4,6 +4,7 @@
           package="io.devmartynov.spiice">
 
     <application
+            android:name=".SliiceApplication"
             android:allowBackup="true"
             android:dataExtractionRules="@xml/data_extraction_rules"
             android:fullBackupContent="@xml/backup_rules"
@@ -14,7 +15,25 @@
             android:theme="@style/Theme.Spiice"
             tools:targetApi="31">
         <activity
-                android:name=".MainActivity"
+                android:name=".SignUpActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".EnjoyFeatureActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".LevelUpFeatureActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".ChatFeatureActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".ProjectsFeatureActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".MoneyFeatureActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".GreetingsActivity"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
