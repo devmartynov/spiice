@@ -5,7 +5,7 @@ import java.util.TimerTask
 private const val TIMER_LABEL = "TRANSITION_TIMER"
 
 class TransitionTimer private constructor(private val delay: Long) : Timer {
-    private var timer: java.util.Timer? = java.util.Timer(TIMER_LABEL, false)
+    private var timer: java.util.Timer? = null
 
     override fun start(onTimerOver: callback) {
         stop()
