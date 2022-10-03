@@ -12,7 +12,7 @@
         <item name="cornerRadius">60dp</item>
         <item name="android:textAllCaps">false</item>
         <item name="background">@drawable/rect</item>
-        <item name="elevation">2dp</item>
+        <item name="elevation">50dp</item>
     </style>
     <style name="InlineButton">
         <item name="android:layout_width">wrap_content</item>
