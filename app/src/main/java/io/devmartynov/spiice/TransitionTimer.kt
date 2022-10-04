@@ -23,7 +23,7 @@ class TransitionTimer private constructor(private val delay: Long) : Timer {
     }
 
     companion object {
-        private var INSTANCE: TransitionTimer? = null
+        private var INSTANCE: Timer? = null
 
         fun initialize(delay: Long) {
             if (INSTANCE == null) {
@@ -31,7 +31,7 @@ class TransitionTimer private constructor(private val delay: Long) : Timer {
             }
         }
 
-        fun get(): TransitionTimer {
+        fun get(): Timer {
             return INSTANCE ?: throw IllegalStateException("TransitionTimer must be initialized")
         }
     }
