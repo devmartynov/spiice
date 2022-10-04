@@ -12,7 +12,6 @@ class EnjoyFeatureActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_enjoy_feature)
-        supportActionBar?.hide()
         timer.start(::goToSignUp)
         findViewById<Button>(R.id.skip).setOnClickListener(::onSkipClick)
     }

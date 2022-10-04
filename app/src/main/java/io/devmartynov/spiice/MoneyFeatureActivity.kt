@@ -12,7 +12,6 @@ class MoneyFeatureActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_money_feature)
-        supportActionBar?.hide()
         timer.start(::goToNextScreen)
         findViewById<Button>(R.id.skip).setOnClickListener(::onSkipClick)
     }

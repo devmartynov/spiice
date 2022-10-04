@@ -12,7 +12,6 @@ class ProjectsFeatureActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_projects_feature)
-        supportActionBar?.hide()
         timer.start(::goToNextScreen)
         findViewById<Button>(R.id.skip).setOnClickListener(::onSkipClick)
     }
@@ -20,10 +19,6 @@ class ProjectsFeatureActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         timer.start(::goToNextScreen)
-    }
-
-    override fun onBackPressed() {
-        // prevent returning back from this screen
     }
 
     private fun onSkipClick(view: View) {
