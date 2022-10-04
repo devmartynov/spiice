@@ -19,27 +19,19 @@
                 android:exported="false"/>
         <activity
                 android:name=".EnjoyFeatureActivity"
-                android:exported="true">
-
-        </activity>
+                android:exported="false"/>
         <activity
                 android:name=".LevelUpFeatureActivity"
-                android:exported="true">
-
-        </activity>
+                android:exported="false"/>
         <activity
                 android:name=".ChatFeatureActivity"
-                android:exported="true">
-
-        </activity>
+                android:exported="false"/>
         <activity
                 android:name=".ProjectsFeatureActivity"
                 android:exported="false"/>
         <activity
                 android:name=".MoneyFeatureActivity"
-                android:exported="true">
-
-        </activity>
+                android:exported="false"/>
         <activity
                 android:name=".GreetingsActivity"
                 android:exported="true">
