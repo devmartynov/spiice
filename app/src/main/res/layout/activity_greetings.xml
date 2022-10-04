@@ -37,27 +37,16 @@
             app:layout_constraintStart_toStartOf="parent"
             style="@style/PrimaryButton"/>
 
-    <LinearLayout
-            android:orientation="horizontal"
+    <Button
+            android:id="@+id/log_in"
+            android:layout_marginTop="@dimen/login_margin_top"
+            android:text="@string/login_question_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/login_margin_top"
             app:layout_constraintTop_toBottomOf="@+id/discover_platform"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-                android:text="@string/account_question"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        <Button
-                android:id="@+id/log_in"
-                android:text="@string/log_in_btn_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/InlineButton"/>
-
-    </LinearLayout>
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/InlineButton"/>
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/top_guideline"
