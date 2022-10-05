@@ -7,8 +7,6 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
 class EnjoyFeatureActivity : AppCompatActivity() {
-    private val timer: Timer = TransitionTimer.get()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_enjoy_feature)
@@ -16,7 +14,6 @@ class EnjoyFeatureActivity : AppCompatActivity() {
     }
 
     private fun onSkipClick(view: View) {
-        timer.stop()
         startActivity(Intent(this, SignUpActivity::class.java))
     }
 }

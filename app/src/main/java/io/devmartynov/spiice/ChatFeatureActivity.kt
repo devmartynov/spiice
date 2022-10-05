@@ -12,13 +12,17 @@ class ChatFeatureActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_feature)
-        timer.start(::goToNextScreen)
         findViewById<Button>(R.id.skip).setOnClickListener(::onSkipClick)
     }
 
-    override fun onRestart() {
-        super.onRestart()
+    override fun onResume() {
+        super.onResume()
         timer.start(::goToNextScreen)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        timer.stop()
     }
 
     private fun onSkipClick(view: View) {

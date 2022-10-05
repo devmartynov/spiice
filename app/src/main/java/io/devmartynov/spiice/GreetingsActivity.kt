@@ -12,7 +12,6 @@ class GreetingsActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_greetings)
-        timer.stop()
         findViewById<Button>(R.id.discover_platform).setOnClickListener(::onDiscoverClick)
         findViewById<Button>(R.id.log_in).setOnClickListener(::onLoginClick)
     }
@@ -21,11 +20,6 @@ class GreetingsActivity: AppCompatActivity() {
         startActivity(
             Intent(this , ProjectsFeatureActivity::class.java)
         )
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        timer.stop()
     }
 
     private fun onLoginClick(view: View) {
