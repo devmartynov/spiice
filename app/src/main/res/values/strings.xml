@@ -8,4 +8,12 @@
     <string name="chat_feature_description">Chat with others freelancers and develop your network</string>
     <string name="level_up_feature_description">Work hard and level up!</string>
     <string name="enjoy_feature_description">Enjoy your progress!</string>
+    <string name="sign_up_label">Sign-up</string>
+    <string name="first_name_hint">Enter your first name</string>
+    <string name="first_name_placeholder">First name</string>
+    <string name="last_name_placeholder">Last name</string>
+    <string name="email_placeholder">Email</string>
+    <string name="password_placeholder">Password</string>
+    <string name="log_in_label">Log-in</string>
+    <string name="to_sign_up_label">Return to Sign-up</string>
 </resources>

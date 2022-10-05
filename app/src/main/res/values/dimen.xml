@@ -2,7 +2,8 @@
 <resources>
     <dimen name="text_size_h1">96sp</dimen>
     <dimen name="text_size_h5">32sp</dimen>
-    <dimen name="font_weight_h5">500</dimen>
+    <dimen name="text_size_h6">27sp</dimen>
+    <dimen name="font_weight_sub_header">500</dimen>
     <dimen name="dot_size">5dp</dimen>
     <dimen name="dot_active_size">7dp</dimen>
     <dimen name="dot_space_between">4dp</dimen>

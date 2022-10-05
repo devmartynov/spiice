@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bubbles_sign_up"
+        android:background="@drawable/bubbles_log_in"
         android:padding="@dimen/screen_padding_small"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -25,21 +25,7 @@
                 android:textFontWeight="@integer/font_weight_medium"
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/form_layout_header_margin_bottom"
-                android:text="@string/sign_up_label"/>
-
-        <EditText
-                android:id="@+id/first_name"
-                android:layout_marginBottom="@dimen/form_field_margin_bottom"
-                android:hint="@string/first_name_placeholder"
-                android:inputType="textPersonName"
-                style="@style/FormField"/>
-
-        <EditText
-                android:id="@+id/last_name"
-                android:layout_marginBottom="@dimen/form_field_margin_bottom"
-                android:hint="@string/last_name_placeholder"
-                android:inputType="textPersonName"
-                style="@style/FormField"/>
+                android:text="@string/log_in_label"/>
 
         <EditText
                 android:id="@+id/email"
@@ -57,8 +43,8 @@
     </LinearLayout>
 
     <Button
-            android:id="@+id/sign_up"
-            android:text="@string/sign_up_label"
+            android:id="@+id/log_in"
+            android:text="@string/log_in_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@+id/bottom_btn_guideline"
@@ -67,12 +53,12 @@
             style="@style/PrimaryButton"/>
 
     <Button
-            android:id="@+id/log_in"
+            android:id="@+id/sign_up"
             android:layout_marginTop="@dimen/login_margin_top"
-            android:text="@string/login_question_label"
+            android:text="@string/to_sign_up_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/sign_up"
+            app:layout_constraintTop_toBottomOf="@+id/log_in"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             style="@style/InlineButton"/>

@@ -29,6 +29,8 @@ class GreetingsActivity: AppCompatActivity() {
     }
 
     private fun onLoginClick(view: View) {
-
+        startActivity(
+            Intent(this , LoginActivity::class.java)
+        )
     }
 }
