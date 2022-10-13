@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bubbles_sign_up"
+        android:padding="@dimen/screen_padding_small"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/form_layout_padding_vertical"
+            android:paddingHorizontal="@dimen/form_layout_padding_horizontal"
+            android:background="@drawable/form_layout_bg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/top_guideline">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_h5"
+                android:textFontWeight="@integer/font_weight_medium"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/form_layout_header_margin_bottom"
+                android:text="@string/sign_up_label"/>
+
+        <EditText
+                android:id="@+id/first_name"
+                android:layout_marginBottom="@dimen/form_field_margin_bottom"
+                android:hint="@string/first_name_placeholder"
+                android:inputType="textPersonName"
+                style="@style/FormField"/>
+
+        <EditText
+                android:id="@+id/last_name"
+                android:layout_marginBottom="@dimen/form_field_margin_bottom"
+                android:hint="@string/last_name_placeholder"
+                android:inputType="textPersonName"
+                style="@style/FormField"/>
+
+        <EditText
+                android:id="@+id/email"
+                android:layout_marginBottom="@dimen/form_field_margin_bottom"
+                android:hint="@string/email_placeholder"
+                android:inputType="textEmailAddress"
+                style="@style/FormField"/>
+
+        <EditText
+                android:id="@+id/password"
+                android:hint="@string/password_placeholder"
+                android:inputType="textPassword"
+                style="@style/FormField"/>
+
+    </LinearLayout>
+
+    <Button
+            android:id="@+id/sign_up"
+            android:text="@string/sign_up_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/bottom_btn_guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/PrimaryButton"/>
+
+    <Button
+            android:id="@+id/log_in"
+            android:layout_marginTop="@dimen/login_margin_top"
+            android:text="@string/login_question_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/sign_up"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/InlineButton"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/top_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.11"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottom_btn_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.75"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

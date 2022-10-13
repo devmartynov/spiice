@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size_h1">96sp</dimen>
+    <dimen name="text_size_h5">32sp</dimen>
+    <dimen name="text_size_h6">27sp</dimen>
+    <dimen name="font_weight_sub_header">500</dimen>
+    <dimen name="dot_size">5dp</dimen>
+    <dimen name="dot_active_size">7dp</dimen>
+    <dimen name="dot_space_between">4dp</dimen>
+    <dimen name="feature_description_field_height">35dp</dimen>
+    <dimen name="feature_description_max_width">200dp</dimen>
+    <dimen name="progress_dots_margin_top">30dp</dimen>
+    <dimen name="skip_btn_margin">15dp</dimen>
+    <item name="feature_top_guideline_layout_constraint_guide_percent" format="float" type="dimen">0.1</item>
+    <item name="feature_bottom_guideline_feature_text_layout_constraint_guide_percent" format="float" type="dimen">0.8</item>
+    <item name="feature_bottom_guideline_progress_dots_layout_constraint_guide_percent" format="float" type="dimen">0.85</item>
+    <item name="feature_top_guideline_feature_img_layout_constraint_guide_percent" format="float" type="dimen">0.21</item>
+</resources>

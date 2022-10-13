@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="primary_btn_corners">60dp</dimen>
+    <dimen name="login_margin_top">25dp</dimen>
+    <dimen name="form_filed_padding">16dp</dimen>
+    <dimen name="form_layout_header_margin_bottom">32dp</dimen>
+    <dimen name="form_layout_padding_vertical">32dp</dimen>
+    <dimen name="form_layout_padding_horizontal">24dp</dimen>
+    <dimen name="screen_padding_small">16dp</dimen>
+    <dimen name="form_field_margin_bottom">24dp</dimen>
+</resources>

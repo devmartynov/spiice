@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">spiice</string>
+    <string name="app_name">Spiice</string>
+    <string name="discover_platform_btn_label">Discover the platform</string>
+    <string name="login_question_label">You have an account? Log-in</string>
+    <string name="skip_btn_label">Skip</string>
+    <string name="projects_feature_description">Find projects from companies everywhere in the word</string>
+    <string name="money_feature_description">Make money while working on awesome projects</string>
+    <string name="chat_feature_description">Chat with others freelancers and develop your network</string>
+    <string name="level_up_feature_description">Work hard and level up!</string>
+    <string name="enjoy_feature_description">Enjoy your progress!</string>
+    <string name="sign_up_label">Sign-up</string>
+    <string name="first_name_hint">Enter your first name</string>
+    <string name="first_name_placeholder">First name</string>
+    <string name="last_name_placeholder">Last name</string>
+    <string name="email_placeholder">Email</string>
+    <string name="password_placeholder">Password</string>
+    <string name="log_in_label">Log-in</string>
+    <string name="to_sign_up_label">Return to Sign-up</string>
 </resources>
