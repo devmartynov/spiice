@@ -7,7 +7,7 @@ private const val PASSWORD_MAX_LENGTH = 25
 private const val PASSWORD_MIN_CHAR_COUNT = 5
 private val digitRegex = "[0-9]+".toRegex()
 private val letterRegex = "[a-zA-z]+".toRegex()
-private val onlyLetterRegex = "^[a-zA-Z]+\$".toRegex()
+private val onlyLetterRegex = "^\\p{L}+\$".toRegex()
 
 /**
  * Валидирует значение.
