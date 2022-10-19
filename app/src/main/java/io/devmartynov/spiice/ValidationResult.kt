@@ -6,7 +6,7 @@ package io.devmartynov.spiice
 interface ValidationResult {
     /**
      * Есть ли ошибки валидации?
-     * @return true если ошибок нет, иначе false
+     * @return true если ошибки есть, иначе false
      */
     fun hasErrors(): Boolean
     /**
