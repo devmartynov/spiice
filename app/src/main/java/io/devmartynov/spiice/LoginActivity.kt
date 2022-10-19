@@ -3,45 +3,35 @@ package io.devmartynov.spiice
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.View.OnFocusChangeListener
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
+import io.devmartynov.spiice.databinding.ActivityLoginBinding
 
 class LoginActivity: AppCompatActivity() {
-    private lateinit var emailField: EditText
-    private lateinit var emailErrorText: TextView
-    private lateinit var passwordField: EditText
-    private lateinit var passwordErrorText: TextView
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        emailField = findViewById(R.id.email)
-        emailErrorText = findViewById(R.id.email_error)
-        passwordField = findViewById(R.id.password)
-        passwordErrorText = findViewById(R.id.password_error)
-
-        emailField.doAfterTextChanged {
+        binding.email.doAfterTextChanged {
             updateUiErrors(
                 validate(it.toString(), AuthAttributes.EMAIL),
                 AuthAttributes.EMAIL
             )
         }
 
-        passwordField.doAfterTextChanged {
+        binding.password.doAfterTextChanged {
             updateUiErrors(
                 validate(it.toString(), AuthAttributes.PASSWORD),
                 AuthAttributes.PASSWORD
             )
         }
 
-        findViewById<Button>(R.id.log_in).setOnClickListener { login() }
-        findViewById<Button>(R.id.sign_up).setOnClickListener { goToSignUp() }
+        binding.logIn.setOnClickListener { login() }
+        binding.signUp.setOnClickListener { goToSignUp() }
     }
 
     private fun updateUiErrors(state: ValidationResult, attribute: AuthAttributes) {
@@ -49,33 +39,34 @@ class LoginActivity: AppCompatActivity() {
             val errors = state.getErrors().joinToString(separator = "\n")
 
             if (attribute == AuthAttributes.EMAIL) {
-                emailField.setBackgroundResource(R.drawable.form_field_error_bg)
-                emailErrorText.text = errors
-                emailErrorText.visibility = View.VISIBLE
+                binding.email.setBackgroundResource(R.drawable.form_field_error_bg)
+                binding.emailError.text = errors
+                binding.emailError.visibility = View.VISIBLE
             } else {
-                passwordField.setBackgroundResource(R.drawable.form_field_error_bg)
-                passwordErrorText.text = errors
-                passwordErrorText.visibility = View.VISIBLE
+                binding.password.setBackgroundResource(R.drawable.form_field_error_bg)
+                binding.passwordError.text = errors
+                binding.passwordError.visibility = View.VISIBLE
             }
         } else {
             if (attribute == AuthAttributes.EMAIL) {
-                emailField.setBackgroundResource(R.drawable.form_field_bg)
-                emailErrorText.visibility = View.GONE
+                binding.email.setBackgroundResource(R.drawable.form_field_bg)
+                binding.emailError.visibility = View.GONE
             } else {
-                passwordField.setBackgroundResource(R.drawable.form_field_bg)
-                passwordErrorText.visibility = View.GONE
+                binding.password.setBackgroundResource(R.drawable.form_field_bg)
+                binding.passwordError.visibility = View.GONE
             }
         }
     }
 
     private fun login() {
-        val emailErrors = validate(emailField.text.toString(), AuthAttributes.EMAIL)
-        val passwordErrors = validate(passwordField.text.toString(), AuthAttributes.PASSWORD)
+        val emailErrors = validate(binding.email.text.toString(), AuthAttributes.EMAIL)
+        val passwordErrors = validate(binding.password.text.toString(), AuthAttributes.PASSWORD)
 
         updateUiErrors(emailErrors, AuthAttributes.EMAIL)
         updateUiErrors(passwordErrors, AuthAttributes.PASSWORD)
 
-        if (!emailErrors.hasErrors() && !passwordErrors.hasErrors()) { // authorization
+        if (!emailErrors.hasErrors() && !passwordErrors.hasErrors()) {
+            // authorization
             Toast.makeText(this, getString(R.string.log_in_label), Toast.LENGTH_SHORT).show()
         }
     }
