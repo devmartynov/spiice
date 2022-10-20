@@ -2,4 +2,5 @@
 <resources>
     <integer name="font_weight_medium">500</integer>
     <integer name="feature_max_lines">2</integer>
+    <integer name="password_max_chars_count">25</integer>
 </resources>

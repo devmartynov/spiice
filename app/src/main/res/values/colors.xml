@@ -12,4 +12,5 @@
     <color name="main">#120E21</color>
     <color name="dot_color">#299378FF</color>
     <color name="dot_active_color">@color/purple_200</color>
+    <color name="red">#FA4F4F</color>
 </resources>
