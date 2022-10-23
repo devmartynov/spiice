@@ -1,4 +1,4 @@
-package io.devmartynov.spiice
+package io.devmartynov.spiice.timer
 
 typealias callback = () -> Unit
 

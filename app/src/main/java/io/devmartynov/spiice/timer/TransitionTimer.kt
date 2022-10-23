@@ -1,6 +1,6 @@
-package io.devmartynov.spiice
+package io.devmartynov.spiice.timer
 
-import java.util.TimerTask
+import java.util.*
 
 private const val TIMER_LABEL = "TRANSITION_TIMER"
 

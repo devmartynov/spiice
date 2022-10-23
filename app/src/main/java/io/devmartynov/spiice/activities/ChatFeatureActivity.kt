@@ -1,17 +1,20 @@
-package io.devmartynov.spiice
+package io.devmartynov.spiice.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import io.devmartynov.spiice.R
+import io.devmartynov.spiice.timer.Timer
+import io.devmartynov.spiice.timer.TransitionTimer
 
-class ProjectsFeatureActivity : AppCompatActivity() {
+class ChatFeatureActivity : AppCompatActivity() {
     private val timer: Timer = TransitionTimer.get()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_projects_feature)
+        setContentView(R.layout.activity_chat_feature)
         findViewById<Button>(R.id.skip).setOnClickListener(::onSkipClick)
     }
 
@@ -31,7 +34,7 @@ class ProjectsFeatureActivity : AppCompatActivity() {
     }
 
     private fun goToNextScreen() {
-        startActivity(Intent(this, MoneyFeatureActivity::class.java))
+        startActivity(Intent(this, LevelUpFeatureActivity::class.java))
     }
 
     private fun goToSignUp() {

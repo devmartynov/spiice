@@ -5,6 +5,10 @@ private const val NAME_MAX_LENGTH = 20
 private const val PASSWORD_MIN_LENGTH = 10
 private const val PASSWORD_MAX_LENGTH = 25
 private const val PASSWORD_MIN_CHAR_COUNT = 5
+private const val NOTE_TITLE_MIN_LENGTH = 2
+private const val NOTE_TITLE_MAX_LENGTH = 30
+private const val NOTE_CONTENT_MIN_LENGTH = 3
+private const val NOTE_CONTENT_MAX_LENGTH = 150
 private val digitRegex = "[0-9]+".toRegex()
 private val letterRegex = "[a-zA-z]+".toRegex()
 private val onlyLetterRegex = "^\\p{L}+\$".toRegex()
@@ -16,11 +20,13 @@ private val onlyLetterRegex = "^\\p{L}+\$".toRegex()
  * @param attribute атрибут поля
  * @return результат валидации
  */
-fun validate(value: String, attribute: AuthAttributes): ValidationResult = when (attribute) {
-    AuthAttributes.EMAIL -> validateEmail(value)
-    AuthAttributes.PASSWORD -> validatePassword(value)
-    AuthAttributes.FIRST_NAME -> validateName(value)
-    AuthAttributes.LAST_NAME -> validateName(value)
+fun validate(value: String, attribute: FormAttributes): ValidationResult = when (attribute) {
+    FormAttributes.EMAIL -> validateEmail(value)
+    FormAttributes.PASSWORD -> validatePassword(value)
+    FormAttributes.FIRST_NAME -> validateName(value)
+    FormAttributes.LAST_NAME -> validateName(value)
+    FormAttributes.NOTE_TITLE -> validateNoteTitle(value)
+    FormAttributes.NOTE_CONTENT -> validateNoteContent(value)
 }
 
 /**
@@ -29,8 +35,8 @@ fun validate(value: String, attribute: AuthAttributes): ValidationResult = when 
  * @return результат валидации
  */
 private fun validateEmail(email: String): ValidationResult {
-    return object : ValidationResult {
-        val hasErrors = !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    return object: ValidationResult {
+        val hasErrors = !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
 
         override fun hasErrors(): Boolean {
             return hasErrors
@@ -58,14 +64,11 @@ private fun validatePassword(password: String): ValidationResult {
         errors.add("Поле должно содержать хотя бы одну цифру")
     }
 
-    if (password
-            .filter { char -> letterRegex.matches(char.toString()) }
-            .length < PASSWORD_MIN_CHAR_COUNT
-        ) {
+    if (password.filter { char -> letterRegex.matches(char.toString()) }.length < PASSWORD_MIN_CHAR_COUNT) {
         errors.add("Поле должно содержать хотя бы $PASSWORD_MIN_CHAR_COUNT букв")
     }
 
-    return object : ValidationResult {
+    return object: ValidationResult {
         override fun hasErrors(): Boolean {
             return errors.isNotEmpty()
         }
@@ -92,13 +95,59 @@ private fun validateName(name: String): ValidationResult {
         errors.add("Поле должно содержать только буквы")
     }
 
-    return object : ValidationResult {
+    return object: ValidationResult {
         override fun hasErrors(): Boolean {
             return errors.isNotEmpty()
         }
 
         override fun getErrors(): List<String> {
             return errors
+        }
+    }
+}
+
+/**
+ * Валидирует заголовок заметки.
+ * @param title значение для валидации
+ * @return результат валидации
+ */
+private fun validateNoteTitle(title: String): ValidationResult {
+    return object: ValidationResult {
+        val hasErrors = title.length !in NOTE_TITLE_MIN_LENGTH..NOTE_TITLE_MAX_LENGTH
+
+        override fun hasErrors(): Boolean {
+            return hasErrors
+        }
+
+        override fun getErrors(): List<String> {
+            return if (hasErrors) {
+                listOf("Поле должно содержать минимум $NOTE_TITLE_MIN_LENGTH символа и максимум  $NOTE_TITLE_MAX_LENGTH символов")
+            } else {
+                emptyList()
+            }
+        }
+    }
+}
+
+/**
+ * Валидирует контент заметки.
+ * @param content значение для валидации
+ * @return результат валидации
+ */
+private fun validateNoteContent(content: String): ValidationResult {
+    return object: ValidationResult {
+        val hasErrors = content.length !in NOTE_CONTENT_MIN_LENGTH..NOTE_CONTENT_MAX_LENGTH
+
+        override fun hasErrors(): Boolean {
+            return hasErrors
+        }
+
+        override fun getErrors(): List<String> {
+            return if (hasErrors) {
+                listOf("Поле должно содержать минимум $NOTE_CONTENT_MIN_LENGTH символа и максимум  $NOTE_CONTENT_MAX_LENGTH символов")
+            } else {
+                emptyList()
+            }
         }
     }
 }
