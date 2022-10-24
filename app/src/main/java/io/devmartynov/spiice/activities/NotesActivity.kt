@@ -38,7 +38,9 @@ class NotesActivity: AppCompatActivity() {
         binding.addNew.setOnClickListener { goToAddEditScreen() }
         binding.notesRecycler.apply {
             layoutManager = LinearLayoutManager(this@NotesActivity)
-            adapter = NotesAdapter(object: OnNoteClickListener {
+            adapter = NotesAdapter(
+                notes = notesViewModel.getNotes(),
+                noteClickListener = object: OnNoteClickListener {
                 override fun onClick(note: Note) {
                     goToAddEditScreen(note.id)
                 }

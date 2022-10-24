@@ -11,10 +11,9 @@ import io.devmartynov.spiice.model.Note
  * Адаптер для списка заметок
  */
 class NotesAdapter(
+    private var notes: List<Note>,
     private val noteClickListener: NotesActivity.OnNoteClickListener,
 ): RecyclerView.Adapter<NoteViewHolder>() {
-    private var notes: List<Note> = emptyList()
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.note_list_item, parent, false),
