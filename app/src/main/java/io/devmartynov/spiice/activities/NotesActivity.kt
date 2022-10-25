@@ -40,7 +40,7 @@ class NotesActivity: AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@NotesActivity)
             adapter = NotesAdapter(
                 notes = notesViewModel.getNotes(),
-                noteClickListener = object: OnNoteClickListener {
+                noteClickListener = object: NotesAdapter.OnNoteClickListener {
                 override fun onClick(note: Note) {
                     goToAddEditScreen(note.id)
                 }
@@ -80,12 +80,5 @@ class NotesActivity: AppCompatActivity() {
         }
 
         startActivity(intent)
-    }
-
-    /**
-     * Слушатель события нажатия по заметке в списке.
-     */
-    interface OnNoteClickListener {
-        fun onClick(note: Note)
     }
 }

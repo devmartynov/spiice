@@ -12,7 +12,7 @@ import io.devmartynov.spiice.model.Note
  */
 class NotesAdapter(
     private var notes: List<Note>,
-    private val noteClickListener: NotesActivity.OnNoteClickListener,
+    private val noteClickListener: OnNoteClickListener,
 ): RecyclerView.Adapter<NoteViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder(
@@ -35,5 +35,12 @@ class NotesAdapter(
      */
     fun setList(notes: List<Note>) {
         this.notes = notes
+    }
+
+    /**
+     * Слушатель события нажатия по заметке в списке.
+     */
+    interface OnNoteClickListener {
+        fun onClick(note: Note)
     }
 }
