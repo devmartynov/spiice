@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:paddingHorizontal="@dimen/screen_padding_small"
+        android:paddingTop="18dp"
+        android:paddingBottom="70dp"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+            android:weightSum="10"
+            android:layout_marginBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/title"
+                android:layout_weight="6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                style="@style/NoteTitle"/>
+
+        <TextView
+                android:id="@+id/create_time"
+                android:layout_weight="4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/note_create_time_margin_start"
+                android:textAlignment="textEnd"
+                style="@style/NoteCreateTime"/>
+
+    </LinearLayout>
+
+    <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            style="@style/NoteContent"/>
+
+</LinearLayout>

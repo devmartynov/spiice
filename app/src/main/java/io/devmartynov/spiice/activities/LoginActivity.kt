@@ -1,12 +1,15 @@
-package io.devmartynov.spiice
+package io.devmartynov.spiice.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
+import io.devmartynov.spiice.FormAttributes
+import io.devmartynov.spiice.R
+import io.devmartynov.spiice.ValidationResult
 import io.devmartynov.spiice.databinding.ActivityLoginBinding
+import io.devmartynov.spiice.validate
 
 class LoginActivity: AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -18,15 +21,13 @@ class LoginActivity: AppCompatActivity() {
 
         binding.email.doAfterTextChanged {
             updateUiErrors(
-                validate(it.toString(), AuthAttributes.EMAIL),
-                AuthAttributes.EMAIL
+                validate(it.toString(), FormAttributes.EMAIL), FormAttributes.EMAIL
             )
         }
 
         binding.password.doAfterTextChanged {
             updateUiErrors(
-                validate(it.toString(), AuthAttributes.PASSWORD),
-                AuthAttributes.PASSWORD
+                validate(it.toString(), FormAttributes.PASSWORD), FormAttributes.PASSWORD
             )
         }
 
@@ -34,11 +35,11 @@ class LoginActivity: AppCompatActivity() {
         binding.signUp.setOnClickListener { goToSignUp() }
     }
 
-    private fun updateUiErrors(state: ValidationResult, attribute: AuthAttributes) {
+    private fun updateUiErrors(state: ValidationResult, attribute: FormAttributes) {
         if (state.hasErrors()) {
             val errors = state.getErrors().joinToString(separator = "\n")
 
-            if (attribute == AuthAttributes.EMAIL) {
+            if (attribute == FormAttributes.EMAIL) {
                 binding.email.setBackgroundResource(R.drawable.form_field_error_bg)
                 binding.emailError.text = errors
                 binding.emailError.visibility = View.VISIBLE
@@ -48,7 +49,7 @@ class LoginActivity: AppCompatActivity() {
                 binding.passwordError.visibility = View.VISIBLE
             }
         } else {
-            if (attribute == AuthAttributes.EMAIL) {
+            if (attribute == FormAttributes.EMAIL) {
                 binding.email.setBackgroundResource(R.drawable.form_field_bg)
                 binding.emailError.visibility = View.GONE
             } else {
@@ -59,15 +60,16 @@ class LoginActivity: AppCompatActivity() {
     }
 
     private fun login() {
-        val emailErrors = validate(binding.email.text.toString(), AuthAttributes.EMAIL)
-        val passwordErrors = validate(binding.password.text.toString(), AuthAttributes.PASSWORD)
+        val emailErrors = validate(binding.email.text.toString(), FormAttributes.EMAIL)
+        val passwordErrors = validate(binding.password.text.toString(), FormAttributes.PASSWORD)
 
-        updateUiErrors(emailErrors, AuthAttributes.EMAIL)
-        updateUiErrors(passwordErrors, AuthAttributes.PASSWORD)
+        updateUiErrors(emailErrors, FormAttributes.EMAIL)
+        updateUiErrors(passwordErrors, FormAttributes.PASSWORD)
 
         if (!emailErrors.hasErrors() && !passwordErrors.hasErrors()) {
-            // authorization
-            Toast.makeText(this, getString(R.string.log_in_label), Toast.LENGTH_SHORT).show()
+            startActivity(
+                Intent(this@LoginActivity, NotesActivity::class.java)
+            )
         }
     }
 

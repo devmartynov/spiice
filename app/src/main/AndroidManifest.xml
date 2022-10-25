@@ -15,28 +15,34 @@
             android:theme="@style/Theme.Spiice"
             tools:targetApi="31">
         <activity
-                android:name=".LoginActivity"
+                android:name=".activities.AddEditNoteActivity"
                 android:exported="false"/>
         <activity
-                android:name=".SignUpActivity"
+                android:name=".activities.NotesActivity"
                 android:exported="false"/>
         <activity
-                android:name=".EnjoyFeatureActivity"
+                android:name=".activities.LoginActivity"
                 android:exported="false"/>
         <activity
-                android:name=".LevelUpFeatureActivity"
+                android:name=".activities.SignUpActivity"
                 android:exported="false"/>
         <activity
-                android:name=".ChatFeatureActivity"
+                android:name=".activities.EnjoyFeatureActivity"
                 android:exported="false"/>
         <activity
-                android:name=".ProjectsFeatureActivity"
+                android:name=".activities.LevelUpFeatureActivity"
                 android:exported="false"/>
         <activity
-                android:name=".MoneyFeatureActivity"
+                android:name=".activities.ChatFeatureActivity"
                 android:exported="false"/>
         <activity
-                android:name=".GreetingsActivity"
+                android:name=".activities.ProjectsFeatureActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".activities.MoneyFeatureActivity"
+                android:exported="false"/>
+        <activity
+                android:name=".activities.GreetingsActivity"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

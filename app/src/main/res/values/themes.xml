@@ -15,4 +15,11 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/purple_200</item>
         <!-- Customize your theme here. -->
     </style>
+<!--
+<style name="Theme.SpiiceNoActionBar" parent="Theme.Spiice">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+-->
 </resources>
