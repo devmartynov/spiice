@@ -12,7 +12,7 @@ import io.devmartynov.spiice.model.Note
  */
 class NoteViewHolder(
     private val view: View,
-    private val noteClickListener: NotesActivity.OnNoteClickListener,
+    private val noteClickListener: NotesAdapter.OnNoteClickListener,
 ) : ViewHolder(view) {
     fun bind(note: Note) {
         view.apply {
