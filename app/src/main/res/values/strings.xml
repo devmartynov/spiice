@@ -29,4 +29,8 @@
     <string name="note_undo_remove_action_label">Отменить удаление?</string>
     <string name="undo">Отменить</string>
     <string name="remove_label">Удалить</string>
+    <string name="open_note_list_item_menu_label">Открыть меню</string>
+    <string name="share_label">Поделиться</string>
+    <string name="share_dialog_title">Поделиться заметкой через</string>
+    <string name="share_subject">Заметка</string>
 </resources>

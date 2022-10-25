@@ -24,4 +24,13 @@ class NotesViewModel: ViewModel() {
     fun addNote(note: Note): Boolean {
         return repository.addNote(note)
     }
+
+    /**
+     * Возвращает информация для шаринга заметки.
+     * @param note заметка, которую шарим
+     * @return инфа для шаринга в виде строки
+     */
+    fun getNoteSharingInfo(note: Note): String {
+        return "${note.title}\n${note.content}"
+    }
 }

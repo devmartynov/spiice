@@ -7,12 +7,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.devmartynov.spiice.R
 import io.devmartynov.spiice.databinding.ActivityNotesBinding
 import io.devmartynov.spiice.model.Note
 import io.devmartynov.spiice.notes.NotesAdapter
 import io.devmartynov.spiice.notes.SwiperCallback
 import io.devmartynov.spiice.view.NotesViewModel
 import java.util.*
+
+private const val SHARE_CONTENT_TYPE = "text/plain"
 
 /**
  * Экран списка заметок
@@ -58,10 +61,12 @@ class NotesActivity: AppCompatActivity() {
             adapter = NotesAdapter(
                 notes = notesViewModel.getNotes(),
                 noteClickListener = object: NotesAdapter.OnNoteClickListener {
-                override fun onClick(note: Note) {
-                    goToAddEditScreen(note.id)
+                    override fun onClick(note: Note) { goToAddEditScreen(note.id) }
+                },
+                shareClickListener = object : NotesAdapter.OnShareClickListener {
+                    override fun onClick(note: Note) { shareNote(note) }
                 }
-            })
+            )
         }
         (binding.notesRecycler.adapter as NotesAdapter).setList(notesViewModel.getNotes())
         ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.notesRecycler)
@@ -98,5 +103,23 @@ class NotesActivity: AppCompatActivity() {
         }
 
         startActivity(intent)
+    }
+
+    /**
+     * Формирует интент для отправки текста заметки и запускает его.
+     * @param note заметка для шаринга
+     */
+    private fun shareNote(note: Note) {
+        Intent(Intent.ACTION_SEND)
+            .apply {
+                type = SHARE_CONTENT_TYPE
+                putExtra(Intent.EXTRA_TEXT, notesViewModel.getNoteSharingInfo(note))
+                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject))
+            }
+            .also { intent ->
+                startActivity(
+                    Intent.createChooser(intent, getString(R.string.share_dialog_title))
+                )
+            }
     }
 }

@@ -13,11 +13,13 @@ import io.devmartynov.spiice.model.Note
 class NotesAdapter(
     private var notes: List<Note>,
     private val noteClickListener: OnNoteClickListener,
+    private val shareClickListener: OnShareClickListener,
 ): RecyclerView.Adapter<NoteViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.note_list_item, parent, false),
-            noteClickListener
+            noteClickListener,
+            shareClickListener
         )
     }
 
@@ -49,6 +51,13 @@ class NotesAdapter(
      * Слушатель события нажатия по заметке в списке.
      */
     interface OnNoteClickListener {
+        fun onClick(note: Note)
+    }
+
+    /**
+     * Слушатель события нажатия на кнопку "поделиться"
+     */
+    interface OnShareClickListener {
         fun onClick(note: Note)
     }
 }
