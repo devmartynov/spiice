@@ -4,7 +4,6 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import io.devmartynov.spiice.R
-import io.devmartynov.spiice.activities.NotesActivity
 import io.devmartynov.spiice.model.Note
 
 /**
