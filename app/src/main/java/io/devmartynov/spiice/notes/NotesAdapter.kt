@@ -38,6 +38,14 @@ class NotesAdapter(
     }
 
     /**
+     * Возвращает заметку из списка по позиции
+     * @param position позиция заметки в списке(индекс)
+     */
+    fun getItem(position: Int): Note {
+        return this.notes[position]
+    }
+
+    /**
      * Слушатель события нажатия по заметке в списке.
      */
     interface OnNoteClickListener {

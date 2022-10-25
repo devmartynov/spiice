@@ -26,4 +26,7 @@
     <string name="add_btn_label">Add</string>
     <string name="failure_note_creation_message">Во время добавления заметки произошла ошибка, попробуйте снова</string>
     <string name="fix_errors_message">Исправьте ошибки</string>
+    <string name="note_undo_remove_action_label">Отменить удаление?</string>
+    <string name="undo">Отменить</string>
+    <string name="remove_label">Удалить</string>
 </resources>

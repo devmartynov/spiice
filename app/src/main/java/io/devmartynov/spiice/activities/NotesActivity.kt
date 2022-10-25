@@ -4,17 +4,34 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.devmartynov.spiice.view.NotesViewModel
+import androidx.recyclerview.widget.RecyclerView
 import io.devmartynov.spiice.databinding.ActivityNotesBinding
 import io.devmartynov.spiice.model.Note
 import io.devmartynov.spiice.notes.NotesAdapter
+import io.devmartynov.spiice.notes.SwiperCallback
+import io.devmartynov.spiice.view.NotesViewModel
 import java.util.*
 
 /**
  * Экран списка заметок
  */
 class NotesActivity: AppCompatActivity() {
+    private val simpleCallback = SwiperCallback(
+        context = this,
+        config = object : SwiperCallback.Config {
+            override fun updateUi() {
+                updateUiList()
+            }
+            override fun deleteNote(noteId: UUID): Boolean = notesViewModel.deleteNote(noteId)
+            override fun addNote(note: Note): Boolean = notesViewModel.addNote(note)
+            override fun getRecycler(): RecyclerView = binding.notesRecycler
+        },
+        dragDirs = 0,
+        swipeDirs = ItemTouchHelper.LEFT
+    )
+
     private lateinit var binding: ActivityNotesBinding
 
     private val notesViewModel: NotesViewModel by lazy {
@@ -47,6 +64,7 @@ class NotesActivity: AppCompatActivity() {
             })
         }
         (binding.notesRecycler.adapter as NotesAdapter).setList(notesViewModel.getNotes())
+        ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.notesRecycler)
     }
 
     /**
