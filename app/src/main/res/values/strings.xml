@@ -33,4 +33,6 @@
     <string name="share_label">Поделиться</string>
     <string name="share_dialog_title">Поделиться заметкой через</string>
     <string name="share_subject">Заметка</string>
+    <string name="schedule_time_label">Запланированное время заметки</string>
+    <string name="schedule_btn_label">Запланировать заметку</string>
 </resources>

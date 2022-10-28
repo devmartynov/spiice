@@ -60,12 +60,8 @@ class NotesActivity: AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@NotesActivity)
             adapter = NotesAdapter(
                 notes = notesViewModel.getNotes(),
-                noteClickListener = object: NotesAdapter.OnNoteClickListener {
-                    override fun onClick(note: Note) { goToAddEditScreen(note.id) }
-                },
-                shareClickListener = object : NotesAdapter.OnShareClickListener {
-                    override fun onClick(note: Note) { shareNote(note) }
-                }
+                onNoteClick = { note -> goToAddEditScreen(note.id) },
+                onShareClick = { note -> shareNote(note) }
             )
         }
         (binding.notesRecycler.adapter as NotesAdapter).setList(notesViewModel.getNotes())
@@ -85,8 +81,10 @@ class NotesActivity: AppCompatActivity() {
      * TODO: по уму вместо notifyDataSetChanged надо использовать более специфичные варианты, не всегда в onResume нужно обновлять весь список.
      */
     private fun updateUiList() {
-        (binding.notesRecycler.adapter as NotesAdapter).setList(notesViewModel.getNotes())
-        (binding.notesRecycler.adapter as NotesAdapter).notifyDataSetChanged()
+        (binding.notesRecycler.adapter as NotesAdapter).apply {
+            setList(notesViewModel.getNotes())
+            notifyDataSetChanged()
+        }
     }
 
     /**

@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:orientation="horizontal"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
         android:layout_width="match_parent"
         android:paddingLeft="@dimen/screen_padding_small"
         android:paddingTop="18dp"
@@ -59,5 +60,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:iconPadding="0dp"
             style="@style/ToolbarAction" />
+
+    <ImageView
+        android:id="@+id/schedule_time_indicator"
+        android:visibility="gone"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:contentDescription="@string/schedule_time_label"
+        android:src="@drawable/ic_future"
+        app:iconPadding="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/share"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
