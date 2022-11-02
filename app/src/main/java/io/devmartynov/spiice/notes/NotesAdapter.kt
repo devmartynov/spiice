@@ -2,22 +2,29 @@ package io.devmartynov.spiice.notes
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import io.devmartynov.spiice.R
-import io.devmartynov.spiice.activities.NotesActivity
 import io.devmartynov.spiice.model.Note
+
+typealias NoteClickHandler = (note: Note) -> Unit
 
 /**
  * Адаптер для списка заметок
+ * @param notes заметки для списка
+ * @param onNoteClick обработчик нажатия на элемент списка
+ * @param onShareClick обработчик нажатия на кнопку шаринга
  */
 class NotesAdapter(
     private var notes: List<Note>,
-    private val noteClickListener: OnNoteClickListener,
+    private val onNoteClick: NoteClickHandler,
+    private val onShareClick: NoteClickHandler,
 ): RecyclerView.Adapter<NoteViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.note_list_item, parent, false),
-            noteClickListener
+            LayoutInflater
+                .from(parent.context)
+                .inflate(R.layout.note_list_item, parent, false)
         )
     }
 
@@ -26,7 +33,10 @@ class NotesAdapter(
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        holder.bind(notes[position])
+        val note = notes[position]
+        holder.bind(note)
+        holder.itemView.setOnClickListener { onNoteClick(note) }
+        holder.itemView.findViewById<Button>(R.id.share).setOnClickListener { onShareClick(note) }
     }
 
     /**
@@ -38,9 +48,10 @@ class NotesAdapter(
     }
 
     /**
-     * Слушатель события нажатия по заметке в списке.
+     * Возвращает заметку из списка по позиции
+     * @param position позиция заметки в списке(индекс)
      */
-    interface OnNoteClickListener {
-        fun onClick(note: Note)
+    fun getItem(position: Int): Note {
+        return this.notes[position]
     }
 }

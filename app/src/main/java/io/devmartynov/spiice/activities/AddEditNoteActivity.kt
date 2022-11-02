@@ -1,5 +1,6 @@
 package io.devmartynov.spiice.activities
 
+import android.app.DatePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -14,6 +15,7 @@ import io.devmartynov.spiice.ValidationResult
 import io.devmartynov.spiice.databinding.ActivityAddEditNoteBinding
 import io.devmartynov.spiice.model.Note
 import io.devmartynov.spiice.validate
+import java.util.Calendar
 import java.util.UUID
 
 const val EXTRA_NOTE_ID = "EXTRA_NOTE_ID"
@@ -23,19 +25,27 @@ const val EXTRA_NOTE_ID = "EXTRA_NOTE_ID"
  */
 class AddEditNoteActivity: AppCompatActivity() {
     private lateinit var binding: ActivityAddEditNoteBinding
-    private var noteId: UUID? = null
+    private var note: Note? = null
 
     private val noteDetailViewModel: NoteDetailViewModel by lazy {
         ViewModelProvider(this)[NoteDetailViewModel::class.java]
     }
+
+    private var hasScheduleDateChanged = false
+    private val calendar = Calendar.getInstance()
+    private val datePickerSetListener =
+        DatePickerDialog.OnDateSetListener { _, year, month, day ->
+            calendar.set(year, month, day)
+            hasScheduleDateChanged = true
+            binding.openCalendar.text = Note.timeAsDate(calendar.time.time)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddEditNoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        noteId = intent.getSerializableExtra(EXTRA_NOTE_ID) as UUID?
-
+        note = getNoteFromIntent()
         setUpFormFields()
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -54,6 +64,24 @@ class AddEditNoteActivity: AppCompatActivity() {
             )
         }
         binding.addNote.setOnClickListener { saveNote() }
+        binding.openCalendar.setOnClickListener {
+            DatePickerDialog(
+                this@AddEditNoteActivity,
+                datePickerSetListener,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+    }
+
+    /**
+     * Получает заметку по переданному в интенте id
+     * @return заметку если id был передан и по этому id есть заметка в базе, иначе null
+     */
+    private fun getNoteFromIntent(): Note? {
+        val noteId = intent.getSerializableExtra(EXTRA_NOTE_ID) as UUID? ?: return null
+        return noteDetailViewModel.getNote(noteId)
     }
 
     /**
@@ -68,12 +96,17 @@ class AddEditNoteActivity: AppCompatActivity() {
         updateUiErrors(contentErrors, FormAttributes.NOTE_CONTENT)
 
         if (!titleErrors.hasErrors() && !contentErrors.hasErrors()) {
-            val newNoteId = noteId ?: UUID.randomUUID()
             val isSuccessfully = noteDetailViewModel.saveNote(
                 Note(
-                    id = newNoteId,
+                    id = note?.id ?: UUID.randomUUID(),
                     title = binding.title.editableText.toString(),
                     content = binding.content.editableText.toString(),
+                    createTime = note?.createTime ?: System.currentTimeMillis(),
+                    scheduleTime = if (hasScheduleDateChanged) {
+                        calendar.time.time
+                    } else {
+                        note?.scheduleTime
+                    }
                 )
             )
 
@@ -92,14 +125,14 @@ class AddEditNoteActivity: AppCompatActivity() {
      * На случай, когда текущий экран - экран редактирования
      */
     private fun setUpFormFields() {
-        if (noteId == null) {
-            return
+        note?.let { note ->
+            binding.title.setText(note.title)
+            binding.content.setText(note.content)
+
+            if (note.scheduleTime != null) {
+                binding.openCalendar.text = Note.timeAsDate(note.createTime)
+            }
         }
-
-        val note = noteDetailViewModel.getNote(noteId!!) ?: return
-
-        binding.title.setText(note.title)
-        binding.content.setText(note.content)
     }
 
     /**

@@ -60,6 +60,7 @@
 
         <LinearLayout
                 android:orientation="vertical"
+                android:layout_marginBottom="@dimen/form_field_margin_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -79,6 +80,13 @@
                     style="@style/FormFieldError"/>
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/open_calendar"
+            android:text="@string/schedule_btn_label"
+            android:backgroundTint="@color/main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <Button
                 android:id="@+id/add_note"
