@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -73,12 +71,6 @@ class NoteMenuFragment : BottomSheetDialogFragment() {
             callbacks?.safeDeleteNote()
             dismiss()
         }
-
-        // смена цвета иконки и установка новой в кнопку
-        val icDelete = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_delete)
-        val wrappedIcDelete = DrawableCompat.wrap(icDelete!!)
-        DrawableCompat.setTint(wrappedIcDelete, requireContext().getColor(R.color.main))
-        binding.delete.setCompoundDrawablesWithIntrinsicBounds(wrappedIcDelete, null, null, null);
     }
 
     /**
@@ -88,8 +80,8 @@ class NoteMenuFragment : BottomSheetDialogFragment() {
         Intent(Intent.ACTION_SEND)
             .apply {
                 type = SHARE_CONTENT_TYPE
-                putExtra(Intent.EXTRA_TEXT, viewModel.getNoteSharingInfo(note!!))
-                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject))
+                putExtra(Intent.EXTRA_TEXT, note!!.content)
+                putExtra(Intent.EXTRA_SUBJECT, note!!.title)
             }
             .also { intent ->
                 startActivity(

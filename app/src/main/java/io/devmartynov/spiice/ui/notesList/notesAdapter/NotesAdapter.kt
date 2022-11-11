@@ -21,9 +21,7 @@ class NotesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder(
-            onNoteClick = onNoteClick,
-            onMenuClick = onMenuClick,
-            view = LayoutInflater
+            LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.note_list_item, parent, false)
         )
@@ -35,7 +33,12 @@ class NotesAdapter(
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val note = notes[position]
-        holder.bind(note, position)
+        holder.bind(
+            note = note,
+            position = position,
+            onNoteClick = onNoteClick,
+            onMenuClick = onMenuClick,
+        )
     }
 
     /**

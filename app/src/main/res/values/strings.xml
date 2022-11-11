@@ -32,7 +32,6 @@
     <string name="open_note_list_item_menu_label">Открыть меню</string>
     <string name="share_label">Поделиться</string>
     <string name="share_dialog_title">Поделиться заметкой через</string>
-    <string name="share_subject">Заметка</string>
     <string name="schedule_time_label">Запланированное время заметки</string>
     <string name="schedule_btn_label">Запланировать заметку</string>
     <string name="edit_label">Изменить</string>

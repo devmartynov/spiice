@@ -48,15 +48,6 @@ class NotesViewModel: ViewModel() {
         return false
     }
 
-    /**
-     * Возвращает информация для шаринга заметки.
-     * @param note заметка, которую шарим
-     * @return инфа для шаринга в виде строки
-     */
-    fun getNoteSharingInfo(note: Note): String {
-        return "${note.title}\n${note.content}"
-    }
-
     fun getNote(noteId: UUID): Note? {
         return repository.getNote(noteId)
     }
