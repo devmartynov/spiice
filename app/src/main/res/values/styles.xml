@@ -55,6 +55,17 @@
         <item name="android:textFontWeight">@integer/font_weight_medium</item>
         <item name="android:textAllCaps">false</item>
     </style>
+    <style name="BottomSheetAction">
+        <item name="android:background">?attr/actionBarItemBackground</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:lineHeight">24sp</item>
+        <item name="android:textColor">@color/main</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:maxLines">1</item>
+        <item name="iconPadding">@dimen/icon_padding_in_bottom_sheet_btn</item>
+        <item name="android:padding">@dimen/padding_in_bottom_sheet_btn</item>
+    </style>
     <style name="ScreenSubTitle">
         <item name="android:textSize">25sp</item>
         <item name="android:lineHeight">33sp</item>

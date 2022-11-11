@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/padding_horizontal_detail_info_bottom_sheet"
+    android:paddingVertical="@dimen/padding_vertical_detail_info_bottom_sheet">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/note_title_preview"
+        android:textFontWeight="@integer/font_weight_bold" />
+
+    <TextView
+        android:id="@+id/note_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding_vertical_detail_info_bottom_sheet"
+        tools:text="Заголовок" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/note_content_preview"
+        android:textFontWeight="@integer/font_weight_bold" />
+
+    <TextView
+        android:id="@+id/note_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding_vertical_detail_info_bottom_sheet"
+        tools:text="Конетент заметки" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/note_create_date_preview"
+        android:textFontWeight="@integer/font_weight_bold" />
+
+    <TextView
+        android:id="@+id/note_create_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding_vertical_detail_info_bottom_sheet"
+        tools:text="12/12/1212" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/note_schedule_date_preview"
+        android:textFontWeight="@integer/font_weight_bold" />
+
+    <TextView
+        android:id="@+id/note_schedule_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/note_no_schedule_date_label" />
+
+</LinearLayout>

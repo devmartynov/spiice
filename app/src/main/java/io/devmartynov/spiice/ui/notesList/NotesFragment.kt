@@ -1,54 +1,45 @@
 package io.devmartynov.spiice.ui.notesList
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.databinding.FragmentNotesBinding
 import io.devmartynov.spiice.model.Note
 import io.devmartynov.spiice.ui.addEditNote.AddEditNoteFragment
 import io.devmartynov.spiice.ui.notesList.notesAdapter.NotesAdapter
 import io.devmartynov.spiice.ui.auth.LoginFragment
+import io.devmartynov.spiice.ui.notesList.noteDetailInfo.NoteDetailInfoFragment
+import io.devmartynov.spiice.ui.notesList.noteMenu.NoteMenuFragment
 import java.util.*
 
 private const val NOTES_FRAGMENT_TAG = "FRAGMENT_TAG"
-private const val SHARE_CONTENT_TYPE = "text/plain"
 
 /**
  * Экран списка заметок
  */
 class NotesFragment : Fragment() {
     private lateinit var binding: FragmentNotesBinding
-
-    private val viewModel: NotesViewModel by lazy {
-        ViewModelProvider(this)[NotesViewModel::class.java]
-    }
+    private val viewModel: NotesViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        Log.d("UUU", "ON_CREATE_VIEW-----")
-
         binding = FragmentNotesBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("UUU", "ON_VIEW_CREATED-----")
-
 
         with(activity as AppCompatActivity) {
             setSupportActionBar(binding.toolbar)
@@ -62,21 +53,24 @@ class NotesFragment : Fragment() {
         binding.notesRecycler.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = NotesAdapter(
-                onNoteClick = { note -> goToAddEditScreen(note.id) },
-                onShareClick = { note -> shareNote(note) }
+                onNoteClick = { note, _ -> showNoteDetailInfo(note) },
+                onMenuClick = { note, position -> showNoteMenu(note.id, position) }
             )
         }
         ItemTouchHelper(getSimpleCallback()).attachToRecyclerView(binding.notesRecycler)
         viewModel.loadNotes()
     }
 
+    /**
+     * Коллбек для свайпа влево/вправо
+     */
     private fun getSimpleCallback(): ItemTouchHelper.SimpleCallback {
         return SwiperCallback(
             context = requireContext(),
             config = object : SwiperCallback.Config {
-                override fun deleteNote(noteId: UUID): Boolean = viewModel.deleteNote(noteId)
-                override fun addNote(position: Int, note: Note): Boolean = viewModel.addNote(position, note)
-                override fun getRecycler(): RecyclerView = binding.notesRecycler
+                override fun deleteNote(position: Int) {
+                    safeDeleteNoteByPosition(position)
+                }
             },
             dragDirs = 0,
             swipeDirs = ItemTouchHelper.LEFT
@@ -118,20 +112,53 @@ class NotesFragment : Fragment() {
     }
 
     /**
-     * Формирует интент для отправки текста заметки и запускает его.
-     * @param note заметка для шаринга
+     * Открывает боттом шит диалог - меню для заметки.
+     * @param noteId id заметки
+     * @param position позиция заметки в адаптере
      */
-    private fun shareNote(note: Note) {
-        Intent(Intent.ACTION_SEND)
-            .apply {
-                type = SHARE_CONTENT_TYPE
-                putExtra(Intent.EXTRA_TEXT, viewModel.getNoteSharingInfo(note))
-                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject))
-            }
-            .also { intent ->
-                startActivity(
-                    Intent.createChooser(intent, getString(R.string.share_dialog_title))
+    private fun showNoteMenu(noteId: UUID, position: Int) {
+        NoteMenuFragment
+            .newInstance(
+                noteId = noteId,
+                callbacks = object : NoteMenuFragment.Callbacks {
+                    override fun goToEditScreen() {
+                        goToAddEditScreen(noteId)
+                    }
+
+                    override fun safeDeleteNote() {
+                        safeDeleteNoteByPosition(position)
+                    }
+                }
+            )
+            .show(parentFragmentManager, NoteMenuFragment.TAG)
+    }
+
+    /**
+     * Открывает боттом шит диалог - детальная информация заметки.
+     * @param note заметка
+     */
+    private fun showNoteDetailInfo(note: Note) {
+        NoteDetailInfoFragment.newInstance(note)
+            .show(parentFragmentManager, NoteDetailInfoFragment.TAG)
+    }
+
+    /**
+     * Удаляет заметку с возможностью восстановления
+     * @param position позиция заметки в адаптере
+     */
+    private fun safeDeleteNoteByPosition(position: Int) {
+        val deletedNote = (binding.notesRecycler.adapter as NotesAdapter).getItem(position)
+        if (viewModel.deleteNote(deletedNote.id)) {
+            Snackbar
+                .make(
+                    binding.notesRecycler,
+                    getString(R.string.note_undo_remove_action_label),
+                    Snackbar.LENGTH_SHORT
                 )
-            }
+                .setAction(getString(R.string.undo)) {
+                    viewModel.addNote(position, deletedNote)
+                }
+                .show()
+        }
     }
 }

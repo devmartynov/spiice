@@ -12,6 +12,10 @@
     <dimen name="progress_dots_margin_top">30dp</dimen>
     <dimen name="skip_btn_margin">15dp</dimen>
     <dimen name="layout_horizontal_padding">16dp</dimen>
+    <dimen name="icon_padding_in_bottom_sheet_btn">40dp</dimen>
+    <dimen name="padding_in_bottom_sheet_btn">15dp</dimen>
+    <dimen name="padding_horizontal_detail_info_bottom_sheet">25dp</dimen>
+    <dimen name="padding_vertical_detail_info_bottom_sheet">30dp</dimen>
     <item name="feature_top_guideline_layout_constraint_guide_percent" format="float" type="dimen">0.1</item>
     <item name="feature_bottom_guideline_feature_text_layout_constraint_guide_percent" format="float" type="dimen">0.8</item>
     <item name="feature_bottom_guideline_progress_dots_layout_constraint_guide_percent" format="float" type="dimen">0.85</item>

@@ -1,5 +1,6 @@
 package io.devmartynov.spiice.model
 
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.*
@@ -18,7 +19,7 @@ data class Note(
     val content: String,
     val createTime: Long = System.currentTimeMillis(),
     val scheduleTime: Long? = null,
-) {
+): Serializable {
     /**
      * Тип заметки.
      * Зависит от запланированного времени.

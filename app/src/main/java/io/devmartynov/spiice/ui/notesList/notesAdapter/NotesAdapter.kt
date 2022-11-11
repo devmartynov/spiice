@@ -2,28 +2,27 @@ package io.devmartynov.spiice.ui.notesList.notesAdapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.model.Note
 
-typealias NoteClickHandler = (note: Note) -> Unit
+typealias NoteClickHandler = (note: Note, position: Int) -> Unit
 
 /**
  * Адаптер для списка заметок
  * @param onNoteClick обработчик нажатия на элемент списка
- * @param onShareClick обработчик нажатия на кнопку шаринга
+ * @param onMenuClick обработчик нажатия на кнопку открытия меню
  */
 class NotesAdapter(
     private val onNoteClick: NoteClickHandler,
-    private val onShareClick: NoteClickHandler,
+    private val onMenuClick: NoteClickHandler,
 ): RecyclerView.Adapter<NoteViewHolder>() {
     private var notes: List<Note> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder(
             onNoteClick = onNoteClick,
-            onShareClick = onShareClick,
+            onMenuClick = onMenuClick,
             view = LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.note_list_item, parent, false)
@@ -36,7 +35,7 @@ class NotesAdapter(
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val note = notes[position]
-        holder.bind(note)
+        holder.bind(note, position)
     }
 
     /**

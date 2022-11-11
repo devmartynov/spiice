@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/note_menu_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/share"
+        style="@style/BottomSheetAction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_share"
+        android:text="@string/share_label" />
+
+    <Button
+        android:id="@+id/edit"
+        style="@style/BottomSheetAction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_edit"
+        android:text="@string/edit_label" />
+
+    <Button
+        android:id="@+id/delete"
+        style="@style/BottomSheetAction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_share"
+        android:text="@string/remove_label" />
+
+</LinearLayout>

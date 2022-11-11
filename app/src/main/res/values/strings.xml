@@ -35,4 +35,10 @@
     <string name="share_subject">Заметка</string>
     <string name="schedule_time_label">Запланированное время заметки</string>
     <string name="schedule_btn_label">Запланировать заметку</string>
+    <string name="edit_label">Изменить</string>
+    <string name="note_title_preview">Заголовок:</string>
+    <string name="note_content_preview">Контент:</string>
+    <string name="note_create_date_preview">Дата создания:</string>
+    <string name="note_schedule_date_preview">Запланирована на:</string>
+    <string name="note_no_schedule_date_label">Не запланирована</string>
 </resources>

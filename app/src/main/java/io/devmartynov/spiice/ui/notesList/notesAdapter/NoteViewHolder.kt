@@ -13,18 +13,18 @@ import io.devmartynov.spiice.model.NoteType
  * Вьюхолдер для адаптера списка заметок
  * @param view view элемента списка
  * @param onNoteClick обработчик нажатия на элемент списка
- * @param onShareClick обработчик нажатия на кнопку шаринга
+ * @param onMenuClick обработчик нажатия на кнопку открытия меню
  */
 class NoteViewHolder(
     private val view: View,
     private val onNoteClick: NoteClickHandler,
-    private val onShareClick: NoteClickHandler,
+    private val onMenuClick: NoteClickHandler,
 ) : ViewHolder(view) {
     /**
      * Устанавливает значения во вьюхи элемента списка
      * @param note заметка
      */
-    fun bind(note: Note) {
+    fun bind(note: Note, position: Int) {
         view.apply {
             setUpScheduleIndicator(note.noteType)
             findViewById<ImageView>(R.id.schedule_time_indicator)
@@ -32,8 +32,8 @@ class NoteViewHolder(
             findViewById<TextView>(R.id.content).text = note.content
             findViewById<TextView>(R.id.create_time).text = Note.timeAsDate(note.createTime)
 
-            setOnClickListener { onNoteClick(note) }
-            findViewById<Button>(R.id.share).setOnClickListener { onShareClick(note) }
+            setOnClickListener { onNoteClick(note, position) }
+            findViewById<Button>(R.id.menu_toggle).setOnClickListener { onMenuClick(note, position) }
         }
     }
 
