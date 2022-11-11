@@ -1,53 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="io.devmartynov.spiice">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="io.devmartynov.spiice">
 
     <application
-            android:name=".SliiceApplication"
-            android:allowBackup="true"
-            android:dataExtractionRules="@xml/data_extraction_rules"
-            android:fullBackupContent="@xml/backup_rules"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
-            android:theme="@style/Theme.Spiice"
-            tools:targetApi="31">
+        android:name=".SliiceApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Spiice"
+        tools:targetApi="31">
         <activity
-                android:name=".activities.AddEditNoteActivity"
-                android:exported="false"/>
-        <activity
-                android:name=".activities.NotesActivity"
-                android:exported="false"/>
-        <activity
-                android:name=".activities.LoginActivity"
-                android:exported="false"/>
-        <activity
-                android:name=".activities.SignUpActivity"
-                android:exported="false"/>
-        <activity
-                android:name=".activities.EnjoyFeatureActivity"
-                android:exported="false"/>
-        <activity
-                android:name=".activities.LevelUpFeatureActivity"
-                android:exported="false"/>
-        <activity
-                android:name=".activities.ChatFeatureActivity"
-                android:exported="false"/>
-        <activity
-                android:name=".activities.ProjectsFeatureActivity"
-                android:exported="false"/>
-        <activity
-                android:name=".activities.MoneyFeatureActivity"
-                android:exported="false"/>
-        <activity
-                android:name=".activities.GreetingsActivity"
-                android:exported="true">
+            android:name=".ui.MainActivity"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

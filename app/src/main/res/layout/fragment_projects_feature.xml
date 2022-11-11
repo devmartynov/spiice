@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:src="@drawable/bubbles_companies"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:src="@drawable/worl_feature_bg"
+        android:scaleType="centerCrop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/top_guideline_feature_img"/>
+
+    <Button
+        android:id="@+id/skip"
+        android:text="@string/skip_btn_label"
+        android:textFontWeight="@integer/font_weight_medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/skip_btn_margin"
+        android:layout_marginEnd="@dimen/skip_btn_margin"
+        style="@style/InlineButton"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="@dimen/text_size_h5"
+        android:textFontWeight="@integer/font_weight_medium"
+        app:layout_constraintTop_toTopOf="@+id/top_guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/feature_description"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/feature_description_field_height"
+        android:text="@string/projects_feature_description"
+        android:maxLines="@integer/feature_max_lines"
+        android:maxWidth="@dimen/feature_description_max_width"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bottom_guideline_feature_text"/>
+
+    <include
+        layout="@layout/feature_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/progress_dots_margin_top"
+        app:layout_constraintTop_toTopOf="@+id/bottom_guideline_feature_dots"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="@dimen/feature_top_guideline_layout_constraint_guide_percent"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top_guideline_feature_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="@dimen/feature_top_guideline_feature_img_layout_constraint_guide_percent"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottom_guideline_feature_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="@dimen/feature_bottom_guideline_feature_text_layout_constraint_guide_percent"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottom_guideline_feature_dots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="@dimen/feature_bottom_guideline_progress_dots_layout_constraint_guide_percent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
