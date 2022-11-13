@@ -1,14 +1,20 @@
 package io.devmartynov.spiice.ui.notesList
 
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.devmartynov.spiice.repository.NotesRepository
-import io.devmartynov.spiice.repository.NotesRepositoryImpl
-import io.devmartynov.spiice.model.Note
+import io.devmartynov.spiice.db.AppDatabase
+import io.devmartynov.spiice.repository.note.NotesRepositoryImpl
+import io.devmartynov.spiice.model.note.Note
 import java.util.UUID
 
-class NotesViewModel: ViewModel() {
-    private val repository: NotesRepository = NotesRepositoryImpl
+/**
+ * VM списка заметок
+ */
+class NotesViewModel(application: Application): ViewModel() {
+    private val repository = NotesRepositoryImpl(
+        AppDatabase.getDatabase(application).noteDao()
+    )
 
     private var _notes = arrayListOf<Note>()
     val notes = MutableLiveData<List<Note>>(_notes)
@@ -30,9 +36,9 @@ class NotesViewModel: ViewModel() {
         return false
     }
 
-    fun deleteNote(noteId: UUID): Boolean {
-        if (repository.deleteNote(noteId)) {
-            _notes.removeIf { note -> note.id == noteId }
+    fun deleteNote(note: Note): Boolean {
+        if (repository.deleteNote(note)) {
+            _notes.removeIf { _note -> _note.id == note.id }
             updateLiveDataList()
             return true
         }

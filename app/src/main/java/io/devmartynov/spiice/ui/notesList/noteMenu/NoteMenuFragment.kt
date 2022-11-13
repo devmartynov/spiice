@@ -10,7 +10,8 @@ import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.databinding.FragmentNoteMenuBinding
-import io.devmartynov.spiice.model.Note
+import io.devmartynov.spiice.model.note.Note
+import io.devmartynov.spiice.ui.ViewModelFactory
 import io.devmartynov.spiice.ui.notesList.NotesViewModel
 import java.io.Serializable
 import java.util.*
@@ -20,7 +21,9 @@ import java.util.*
  */
 class NoteMenuFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentNoteMenuBinding
-    private val viewModel: NotesViewModel by activityViewModels()
+    private val viewModel: NotesViewModel by activityViewModels() {
+        ViewModelFactory(requireActivity().application)
+    }
     private var note: Note? = null
     private var callbacks: Callbacks? = null
 

@@ -1,6 +1,6 @@
-package io.devmartynov.spiice.repository
+package io.devmartynov.spiice.repository.note
 
-import io.devmartynov.spiice.model.Note
+import io.devmartynov.spiice.model.note.Note
 import java.util.UUID
 
 /**
@@ -20,16 +20,10 @@ interface NotesRepository {
     fun updateNote(note: Note): Boolean
 
     /**
-     * Сохраняет заметку.
+     * Удаляет заметку
      * @param note заметка
      */
-    fun saveNote(note: Note): Boolean
-
-    /**
-     * Удаляет заметку
-     * @param noteId id заметки
-     */
-    fun deleteNote(noteId: UUID): Boolean
+    fun deleteNote(note: Note): Boolean
 
     /**
      * Список заметок
@@ -43,6 +37,7 @@ interface NotesRepository {
 
     /**
      * Получает заметку по id
+     * @param id id заметки
      */
-    fun getNote(noteId: UUID): Note?
+    fun getNote(id: UUID): Note?
 }

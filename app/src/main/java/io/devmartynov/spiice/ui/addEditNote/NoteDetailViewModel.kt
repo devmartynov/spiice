@@ -1,16 +1,22 @@
 package io.devmartynov.spiice.ui.addEditNote
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
-import io.devmartynov.spiice.repository.NotesRepository
-import io.devmartynov.spiice.repository.NotesRepositoryImpl
-import io.devmartynov.spiice.model.Note
+import io.devmartynov.spiice.db.AppDatabase
+import io.devmartynov.spiice.repository.note.NotesRepositoryImpl
+import io.devmartynov.spiice.model.note.Note
 import java.util.*
 
-class NoteDetailViewModel : ViewModel() {
-    private val repository: NotesRepository = NotesRepositoryImpl
+/**
+ * VM детальной карточки заметки
+ */
+class NoteDetailViewModel(application: Application) : ViewModel() {
+    private val repository = NotesRepositoryImpl(
+        AppDatabase.getDatabase(application).noteDao()
+    )
 
     fun saveNote(note: Note): Boolean {
-        return repository.saveNote(note)
+        return repository.updateNote(note)
     }
 
     fun getNote(noteId: UUID): Note? {

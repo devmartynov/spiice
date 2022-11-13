@@ -12,7 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.databinding.FragmentNotesBinding
-import io.devmartynov.spiice.model.Note
+import io.devmartynov.spiice.model.note.Note
+import io.devmartynov.spiice.ui.ViewModelFactory
 import io.devmartynov.spiice.ui.addEditNote.AddEditNoteFragment
 import io.devmartynov.spiice.ui.notesList.notesAdapter.NotesAdapter
 import io.devmartynov.spiice.ui.auth.LoginFragment
@@ -27,7 +28,9 @@ private const val NOTES_FRAGMENT_TAG = "FRAGMENT_TAG"
  */
 class NotesFragment : Fragment() {
     private lateinit var binding: FragmentNotesBinding
-    private val viewModel: NotesViewModel by activityViewModels()
+    private val viewModel: NotesViewModel by activityViewModels {
+        ViewModelFactory(requireActivity().application)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -148,7 +151,7 @@ class NotesFragment : Fragment() {
      */
     private fun safeDeleteNoteByPosition(position: Int) {
         val deletedNote = (binding.notesRecycler.adapter as NotesAdapter).getItem(position)
-        if (viewModel.deleteNote(deletedNote.id)) {
+        if (viewModel.deleteNote(deletedNote)) {
             Snackbar
                 .make(
                     binding.notesRecycler,

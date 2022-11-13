@@ -1,5 +1,8 @@
-package io.devmartynov.spiice.model
+package io.devmartynov.spiice.model.note
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -10,15 +13,18 @@ import java.util.*
  * @param id Уникальный индентификатор
  * @param title заголовок
  * @param content текст
+ * @param userCreatorId id пользователя - создателя заметки
  * @param createTime дата создания заметки в виде таймштампа.
  * @param scheduleTime дата запланированной заметки в виде таймштампа. Если дата не выбрана, то заметка незапланированная
  */
+@Entity
 data class Note(
-    val id: UUID = UUID.randomUUID(),
-    val title: String,
-    val content: String,
-    val createTime: Long = System.currentTimeMillis(),
-    val scheduleTime: Long? = null,
+    @PrimaryKey val id: UUID = UUID.randomUUID(),
+    @ColumnInfo(name = "title") val title: String,
+    @ColumnInfo(name = "content") val content: String,
+    @ColumnInfo(name = "userCreatorId") val userCreatorId: Long,
+    @ColumnInfo(name = "createTime") val createTime: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "scheduleTime") val scheduleTime: Long? = null,
 ): Serializable {
     /**
      * Тип заметки.
