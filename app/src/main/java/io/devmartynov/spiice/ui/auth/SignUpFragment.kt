@@ -1,24 +1,29 @@
 package io.devmartynov.spiice.ui.auth
 
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import io.devmartynov.spiice.utils.FormAttributes
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.utils.validation.ValidationResult
 import io.devmartynov.spiice.databinding.FragmentSignupBinding
-import io.devmartynov.spiice.validate
+import io.devmartynov.spiice.ui.ViewModelFactory
+import io.devmartynov.spiice.ui.notesList.NotesFragment
+import io.devmartynov.spiice.utils.text.beautifyListString
 
 /**
  * Экран регистрации
  */
 class SignUpFragment : Fragment() {
     private lateinit var binding: FragmentSignupBinding
+    private val viewModel: AuthViewModel by viewModels {
+        ViewModelFactory(requireActivity().application)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,31 +38,19 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.firstName.doAfterTextChanged {
-            handleAfterTextChange(it, FormAttributes.FIRST_NAME)
+            updateUiErrors(viewModel.validateFirstName(it.toString()), FormAttributes.FIRST_NAME)
         }
         binding.lastName.doAfterTextChanged {
-            handleAfterTextChange(it, FormAttributes.LAST_NAME)
+            updateUiErrors(viewModel.validateLastName(it.toString()), FormAttributes.LAST_NAME)
         }
         binding.email.doAfterTextChanged {
-            handleAfterTextChange(it, FormAttributes.EMAIL)
+            updateUiErrors(viewModel.validateEmail(it.toString()), FormAttributes.EMAIL)
         }
         binding.password.doAfterTextChanged {
-            handleAfterTextChange(it, FormAttributes.PASSWORD)
+            updateUiErrors(viewModel.validatePassword(it.toString()), FormAttributes.PASSWORD)
         }
-
         binding.signUp.setOnClickListener { sighUp() }
-        binding.logIn.setOnClickListener { goToLogin() }
-    }
-
-    /**
-     * Обработчик события, которые вызывается после изменения текста в поле ввод
-     * @param editable поле ввода
-     * @param attribute атрибут поля ввода
-     */
-    private fun handleAfterTextChange(editable: Editable?, attribute: FormAttributes) {
-        updateUiErrors(
-            validate(editable?.toString() ?: "", attribute), attribute
-        )
+        binding.logIn.setOnClickListener { goToSignIn() }
     }
 
     /**
@@ -67,7 +60,7 @@ class SignUpFragment : Fragment() {
      */
     private fun updateUiErrors(state: ValidationResult, attribute: FormAttributes) {
         if (state.hasErrors()) {
-            val errors = state.getErrors().joinToString(separator = "\n")
+            val errors = beautifyListString(state.getErrors())
 
             when (attribute) {
                 FormAttributes.FIRST_NAME -> {
@@ -127,10 +120,15 @@ class SignUpFragment : Fragment() {
      * Перед регистрацией поля валидируются. В случае возникновения ошибок регистрации не происходит.
      */
     private fun sighUp() {
-        val firstNameErrors = validate(binding.firstName.text.toString(), FormAttributes.FIRST_NAME)
-        val lastNameNameErrors = validate(binding.lastName.text.toString(), FormAttributes.LAST_NAME)
-        val emailErrors = validate(binding.email.text.toString(), FormAttributes.EMAIL)
-        val passwordErrors = validate(binding.password.toString(), FormAttributes.PASSWORD)
+        val email = binding.email.text.toString()
+        val firstName = binding.firstName.text.toString()
+        val lastName = binding.lastName.text.toString()
+        val password = binding.password.text.toString()
+
+        val firstNameErrors = viewModel.validateFirstName(firstName)
+        val lastNameNameErrors = viewModel.validateLastName(lastName)
+        val emailErrors = viewModel.validateEmail(email)
+        val passwordErrors = viewModel.validatePassword(password)
 
         updateUiErrors(firstNameErrors, FormAttributes.FIRST_NAME)
         updateUiErrors(lastNameNameErrors, FormAttributes.LAST_NAME)
@@ -143,15 +141,35 @@ class SignUpFragment : Fragment() {
             && !emailErrors.hasErrors()
             && !passwordErrors.hasErrors()
         ) {
-            // registration
-            Toast.makeText(requireContext(), getString(R.string.sign_up_label), Toast.LENGTH_SHORT).show()
+            val authResult = viewModel.signUp(email, firstName, lastName, password)
+            val authMessage = if (authResult.hasAuthErrors()) {
+                beautifyListString(authResult.getAuthErrors())
+            } else {
+                getString(R.string.auth_successful)
+            }
+
+            Toast.makeText(requireContext(), authMessage, Toast.LENGTH_SHORT).show()
+
+            if (!authResult.hasAuthErrors()) {
+                goToNoteList()
+            }
         }
+    }
+
+    /**
+     * Переход на экран списка заметок
+     */
+    private fun goToNoteList() {
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, NotesFragment())
+            .commit()
     }
 
     /**
      * Переход на экран авторизации
      */
-    private fun goToLogin() {
+    private fun goToSignIn() {
         parentFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, LoginFragment())

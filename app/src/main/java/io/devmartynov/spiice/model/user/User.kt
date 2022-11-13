@@ -3,6 +3,7 @@ package io.devmartynov.spiice.model.user
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import io.devmartynov.spiice.utils.auth.generateToken
 import java.util.UUID
 
 /**
@@ -14,5 +15,6 @@ data class User(
     @ColumnInfo(name = "email") val email: String,
     @ColumnInfo(name = "firstName") val firstName: String,
     @ColumnInfo(name = "lastName") val lastName: String,
-    @ColumnInfo(name = "passwordHash") val passwordHash: String
+    @ColumnInfo(name = "passwordHash") val passwordHash: String,
+    @ColumnInfo(name = "token") val token: String = generateToken(),
 )

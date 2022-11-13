@@ -4,20 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import io.devmartynov.spiice.utils.FormAttributes
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.utils.validation.ValidationResult
 import io.devmartynov.spiice.databinding.FragmentLoginBinding
+import io.devmartynov.spiice.ui.ViewModelFactory
 import io.devmartynov.spiice.ui.notesList.NotesFragment
-import io.devmartynov.spiice.validate
+import io.devmartynov.spiice.utils.text.beautifyListString
 
 /**
  * Экран входа
  */
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
+    private val viewModel: AuthViewModel by viewModels {
+        ViewModelFactory(requireActivity().application)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,18 +38,12 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.email.doAfterTextChanged {
-            updateUiErrors(
-                validate(it.toString(), FormAttributes.EMAIL), FormAttributes.EMAIL
-            )
+            updateUiErrors(viewModel.validateEmail(it.toString()), FormAttributes.EMAIL)
         }
-
         binding.password.doAfterTextChanged {
-            updateUiErrors(
-                validate(it.toString(), FormAttributes.PASSWORD), FormAttributes.PASSWORD
-            )
+            updateUiErrors(viewModel.validatePassword(it.toString()), FormAttributes.PASSWORD)
         }
-
-        binding.logIn.setOnClickListener { login() }
+        binding.logIn.setOnClickListener { signIn() }
         binding.signUp.setOnClickListener { goToSignUp() }
     }
 
@@ -80,19 +80,39 @@ class LoginFragment : Fragment() {
      * Авторизация пользователя.
      * Перед авторизацией поля валидируются. В случае возникновения ошибок авторизации не происходит.
      */
-    private fun login() {
-        val emailErrors = validate(binding.email.text.toString(), FormAttributes.EMAIL)
-        val passwordErrors = validate(binding.password.text.toString(), FormAttributes.PASSWORD)
+    private fun signIn() {
+        val email = binding.email.text.toString()
+        val password = binding.password.text.toString()
+        val emailErrors = viewModel.validateEmail(email)
+        val passwordErrors = viewModel.validatePassword(password)
 
         updateUiErrors(emailErrors, FormAttributes.EMAIL)
         updateUiErrors(passwordErrors, FormAttributes.PASSWORD)
 
         if (!emailErrors.hasErrors() && !passwordErrors.hasErrors()) {
-            parentFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container, NotesFragment())
-                .commit()
+            val authResult = viewModel.signIn(email, password)
+            val authMessage = if (authResult.hasAuthErrors()) {
+                beautifyListString(authResult.getAuthErrors())
+            } else {
+                getString(R.string.auth_successful)
+            }
+
+            Toast.makeText(requireContext(), authMessage, Toast.LENGTH_SHORT).show()
+
+            if (!authResult.hasAuthErrors()) {
+                goToNoteList()
+            }
         }
+    }
+
+    /**
+     * Переход на экран списка заметок
+     */
+    private fun goToNoteList() {
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, NotesFragment())
+            .commit()
     }
 
     /**

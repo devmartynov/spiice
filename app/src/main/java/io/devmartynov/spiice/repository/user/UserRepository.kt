@@ -12,4 +12,16 @@ interface UserRepository {
      * @param id id пользователя
      */
     fun getUser(id: UUID): User?
+
+    /**
+     * Получает пользователя по email
+     * @param email email пользователя
+     */
+    fun getUser(email: String): User?
+
+    /**
+     * Добавляет пользователя в базу. Если пользователь уже есть, то обновляет все его поля
+     * @param user пользователь
+     */
+    fun addUser(user: User)
 }

@@ -40,4 +40,7 @@
     <string name="note_create_date_preview">Дата создания:</string>
     <string name="note_schedule_date_preview">Запланирована на:</string>
     <string name="note_no_schedule_date_label">Не запланирована</string>
+    <string name="auth_sign_in_error">Неправильный логин или пароль</string>
+    <string name="auth_sign_up_error">Попробуйте другой email</string>
+    <string name="auth_successful">Успешный вход!</string>
 </resources>

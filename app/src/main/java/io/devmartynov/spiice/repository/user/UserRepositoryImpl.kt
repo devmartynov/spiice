@@ -11,4 +11,12 @@ class UserRepositoryImpl(private val userDao: UserDao) : UserRepository {
     override fun getUser(id: UUID): User? {
         return userDao.getUser(id)
     }
+
+    override fun getUser(email: String): User? {
+        return userDao.getUser(email)
+    }
+
+    override fun addUser(user: User) {
+        userDao.addUser(user)
+    }
 }
