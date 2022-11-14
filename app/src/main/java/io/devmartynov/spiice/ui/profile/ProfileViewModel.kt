@@ -16,6 +16,10 @@ class ProfileViewModel(application: Application) : ViewModel() {
         AppDatabase.getDatabase(application).noteDao()
     )
 
+    companion object {
+        const val ZERO_NOTES = 0L
+    }
+
     fun getUserFullName(): String {
         return userPreferences.fullName
     }

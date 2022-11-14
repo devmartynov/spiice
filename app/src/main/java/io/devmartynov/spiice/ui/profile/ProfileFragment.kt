@@ -33,16 +33,14 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.userFullName.text = viewModel.getUserFullName()
-        binding.notesCount.text = String.format(
-            getString(R.string.notes_count),
-            viewModel.getNotesCount()
-        )
+        setNotesCount(viewModel.getNotesCount())
         binding.deleteProfile.setOnClickListener {
             viewModel.deleteProfile()
             goToSignIn()
         }
         binding.deleteAllNotes.setOnClickListener {
             viewModel.deleteAllNotes()
+            setNotesCount(ProfileViewModel.ZERO_NOTES)
         }
         binding.signOut.setOnClickListener {
             viewModel.signOut()
@@ -58,5 +56,9 @@ class ProfileFragment : Fragment() {
             .beginTransaction()
             .replace(R.id.fragment_container, LoginFragment())
             .commit()
+    }
+
+    private fun setNotesCount(count: Long) {
+        binding.notesCount.text = String.format(getString(R.string.notes_count), count)
     }
 }
