@@ -25,6 +25,7 @@ class LoginFragment : Fragment() {
     private val viewModel: AuthViewModel by viewModels {
         ViewModelFactory(requireActivity().application)
     }
+    private var bottomNav: BottomNavigationView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,8 +39,8 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNav.visibility = View.GONE
+        bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav?.visibility = View.GONE
 
         binding.email.doAfterTextChanged {
             updateUiErrors(viewModel.validateEmail(it.toString()), FormAttributes.EMAIL)
@@ -113,6 +114,7 @@ class LoginFragment : Fragment() {
      * Переход на экран списка заметок
      */
     private fun goToNoteList() {
+        bottomNav?.menu?.findItem(R.id.notes_list)?.isChecked = true
         parentFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, NotesFragment())
