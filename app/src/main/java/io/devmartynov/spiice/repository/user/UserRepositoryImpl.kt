@@ -19,4 +19,8 @@ class UserRepositoryImpl(private val userDao: UserDao) : UserRepository {
     override fun addUser(user: User) {
         userDao.addUser(user)
     }
+
+    override fun deleteUser(id: UUID) {
+        userDao.deleteUser(id)
+    }
 }

@@ -63,7 +63,13 @@ class AuthViewModel(private val application: Application) : ViewModel(), Auth, A
                 passwordHash = getHashedPassword(password),
             )
             userRepository.addUser(newUser)
-            userPreferences.token = newUser.token
+            userPreferences.setUserInfo(
+                token = newUser.token,
+                email = newUser.email,
+                firstName = newUser.firstName,
+                lastName = newUser.lastName,
+                id = newUser.id
+            )
         } else { // пользователь с таким email уже есть в базе
             authErrors.add(application.resources.getString(R.string.auth_sign_up_error))
         }

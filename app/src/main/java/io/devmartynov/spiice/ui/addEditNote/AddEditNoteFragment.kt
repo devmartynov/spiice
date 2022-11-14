@@ -11,11 +11,13 @@ import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.devmartynov.spiice.utils.FormAttributes
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.utils.validation.ValidationResult
 import io.devmartynov.spiice.databinding.FragmentAddEditNoteBinding
 import io.devmartynov.spiice.model.note.Note
+import io.devmartynov.spiice.model.user.UserPreferences
 import io.devmartynov.spiice.ui.ViewModelFactory
 import io.devmartynov.spiice.ui.notesList.NotesFragment
 import io.devmartynov.spiice.validate
@@ -55,16 +57,13 @@ class AddEditNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         note = getNoteFromArguments()
         setUpFormFields()
 
         with(requireContext() as AppCompatActivity) {
-            setSupportActionBar(binding.toolbar)
             supportActionBar?.setDisplayShowTitleEnabled(false)
         }
 
-        binding.back.setOnClickListener { goToNotesList() }
         binding.title.doAfterTextChanged {
             updateUiErrors(
                 validate(it.toString(), FormAttributes.NOTE_TITLE), FormAttributes.NOTE_TITLE
@@ -91,6 +90,10 @@ class AddEditNoteFragment : Fragment() {
      * Переход на экран списка заметок
      */
     private fun goToNotesList() {
+        requireActivity()
+            .findViewById<BottomNavigationView>(R.id.bottom_navigation)
+            .menu.findItem(R.id.notes_list).isChecked = true
+
         parentFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, NotesFragment())
@@ -123,7 +126,7 @@ class AddEditNoteFragment : Fragment() {
                     id = note?.id ?: UUID.randomUUID(),
                     title = binding.title.editableText.toString(),
                     content = binding.content.editableText.toString(),
-                    userCreatorId = 1, // todo tmp hack, remove
+                    userCreatorId = UserPreferences.get().userId,
                     createTime = note?.createTime ?: System.currentTimeMillis(),
                     scheduleTime = if (hasScheduleDateChanged) {
                         calendar.time.time

@@ -36,8 +36,25 @@ interface NotesRepository {
     fun deleteAllNotes(): Boolean
 
     /**
+     * Удаляет все заметки
+     */
+    fun deleteAllUserNotes(userId: UUID): Boolean
+
+    /**
      * Получает заметку по id
      * @param id id заметки
      */
     fun getNote(id: UUID): Note?
+
+    /**
+     * Получает все заметки пользователя
+     * @param id id пользователя
+     */
+    fun getUserNotes(id: UUID): List<Note>
+
+    /**
+     * Получает кол-во заметок пользователя
+     * @param userId id пользователя
+     */
+    fun getUserNotesCount(userId: UUID): Long
 }

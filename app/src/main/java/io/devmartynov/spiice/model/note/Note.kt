@@ -22,7 +22,7 @@ data class Note(
     @PrimaryKey val id: UUID = UUID.randomUUID(),
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "content") val content: String,
-    @ColumnInfo(name = "userCreatorId") val userCreatorId: Long,
+    @ColumnInfo(name = "userCreatorId") val userCreatorId: UUID,
     @ColumnInfo(name = "createTime") val createTime: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "scheduleTime") val scheduleTime: Long? = null,
 ): Serializable {

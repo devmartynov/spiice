@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.devmartynov.spiice.utils.FormAttributes
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.utils.validation.ValidationResult
@@ -36,6 +37,9 @@ class SignUpFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav.visibility = View.GONE
 
         binding.firstName.doAfterTextChanged {
             updateUiErrors(viewModel.validateFirstName(it.toString()), FormAttributes.FIRST_NAME)

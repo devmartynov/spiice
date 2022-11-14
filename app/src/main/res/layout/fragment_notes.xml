@@ -1,39 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:contentInsetStart="@dimen/toolbar_content_inset_start"
-            android:theme="@style/Toolbar">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/screen_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:layout_gravity="center_vertical"
+            android:text="@string/all_notes"
+            android:paddingHorizontal="@dimen/layout_horizontal_padding"
+            style="@style/ScreenTitle"/>
+
+        <EditText
+            android:id="@+id/search_field"
+            android:visibility="gone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_weight="9"
+            android:background="@drawable/bottom_navigation_bg"
+            android:drawablePadding="5dp"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/form_filed_padding"
+            android:elevation="1dp"
+            android:hint="@string/search"
+            android:translationZ="10dp"
+            android:maxLines="1"/>
 
         <Button
-                android:id="@+id/logout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/logout"
-                android:drawableLeft="@drawable/ic_arrow_back"
-                style="@style/ToolbarAction"/>
+            android:id="@+id/toggle_search_field"
+            android:layout_gravity="center_vertical|right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ToolbarAction"
+            android:gravity="center_vertical|right"
+            android:drawableLeft="@drawable/ic_search"/>
 
-        <Button
-                android:id="@+id/add_new"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:text="@string/add_new"
-                style="@style/ToolbarAction"/>
-    </androidx.appcompat.widget.Toolbar>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/notes_recycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-    </androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="match_parent"/>
 </LinearLayout>

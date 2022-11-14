@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.databinding.FragmentGreetingsBinding
 import io.devmartynov.spiice.ui.auth.LoginFragment
@@ -30,6 +31,9 @@ class GreetingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav.visibility = View.GONE
 
         binding.discoverPlatform.setOnClickListener { onDiscoverClick() }
         binding.logIn.setOnClickListener { onLoginClick() }

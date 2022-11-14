@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import io.devmartynov.spiice.ui.addEditNote.NoteDetailViewModel
 import io.devmartynov.spiice.ui.auth.AuthViewModel
 import io.devmartynov.spiice.ui.notesList.NotesViewModel
+import io.devmartynov.spiice.ui.profile.ProfileViewModel
 
 /**
  * Фабрика VM
@@ -23,6 +24,9 @@ class ViewModelFactory(private val application: Application) : ViewModelProvider
         }
         if (modelClass.isAssignableFrom(AuthViewModel::class.java)) {
             return AuthViewModel(application) as T
+        }
+        if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
+            return ProfileViewModel(application) as T
         }
         throw IllegalArgumentException("You've passed unrecognized VM class")
     }

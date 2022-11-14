@@ -24,4 +24,9 @@ interface UserRepository {
      * @param user пользователь
      */
     fun addUser(user: User)
+
+    /**
+     * Удаляет пользователя из базы
+     */
+    fun deleteUser(id: UUID)
 }

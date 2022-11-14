@@ -24,6 +24,13 @@ interface NoteDao {
     @Query("DELETE FROM note")
     fun deleteAllNotes()
 
+    @Query("DELETE FROM note WHERE userCreatorId=(:userId)")
+    fun deleteAllUserNotes(userId: UUID)
+
     @Query("SELECT * FROM note WHERE userCreatorId=(:userId)")
     fun getUserNotes(userId: UUID): List<Note>
+
+    @Query("SELECT COUNT(id) FROM note WHERE userCreatorId=(:userId)")
+    fun getUserNotesCount(userId: UUID): Long
+
 }

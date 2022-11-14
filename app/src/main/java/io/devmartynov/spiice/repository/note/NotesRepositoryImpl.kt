@@ -28,12 +28,25 @@ class NotesRepositoryImpl(private val noteDao: NoteDao) : NotesRepository {
         return noteDao.getNotes()
     }
 
+    override fun getUserNotes(userId: UUID): List<Note> {
+        return noteDao.getUserNotes(userId)
+    }
+
     override fun deleteAllNotes(): Boolean {
         noteDao.deleteAllNotes()
         return true
     }
 
+    override fun deleteAllUserNotes(userId: UUID): Boolean {
+        noteDao.deleteAllUserNotes(userId)
+        return true
+    }
+
     override fun getNote(noteId: UUID): Note? {
         return noteDao.getNote(noteId)
+    }
+
+    override fun getUserNotesCount(userId: UUID): Long {
+        return noteDao.getUserNotesCount(userId)
     }
 }
