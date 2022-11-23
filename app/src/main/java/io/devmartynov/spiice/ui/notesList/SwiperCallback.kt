@@ -5,16 +5,11 @@ import android.graphics.Canvas
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.text.TextPaint
-import android.util.Log
 import android.util.TypedValue
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import io.devmartynov.spiice.R
-import io.devmartynov.spiice.model.Note
-import io.devmartynov.spiice.ui.notesList.notesAdapter.NotesAdapter
-import java.util.UUID
 
 class SwiperCallback(
     private val context: Context,
@@ -32,17 +27,7 @@ class SwiperCallback(
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        val notePosition = viewHolder.adapterPosition
-        val adapter = config.getRecycler().adapter as NotesAdapter
-
-        val deletedNote = adapter.getItem(notePosition)
-        if (config.deleteNote(deletedNote.id)) {
-            Snackbar.make(
-                config.getRecycler(), context.getString(R.string.note_undo_remove_action_label), Snackbar.LENGTH_SHORT
-            ).setAction(context.getString(R.string.undo)) {
-                config.addNote(notePosition, deletedNote)
-            }.show()
-        }
+        config.deleteNote(viewHolder.adapterPosition)
     }
 
     override fun onChildDraw(
@@ -143,8 +128,6 @@ class SwiperCallback(
     }
 
     interface Config {
-        fun deleteNote(noteId: UUID): Boolean
-        fun addNote(position: Int, note: Note): Boolean
-        fun getRecycler(): RecyclerView
+        fun deleteNote(position: Int)
     }
 }
