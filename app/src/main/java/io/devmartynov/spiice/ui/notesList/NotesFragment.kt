@@ -31,9 +31,7 @@ private const val NOTES_FRAGMENT_TAG = "FRAGMENT_TAG"
  */
 class NotesFragment : Fragment() {
     private lateinit var binding: FragmentNotesBinding
-    private val viewModel: NotesViewModel by viewModels {
-        ViewModelFactory(requireActivity().application)
-    }
+    private val viewModel: NotesViewModel by viewModels { ViewModelFactory(null) }
     private var isSearchFieldOpened = false
     private var inputMethodManager: InputMethodManager? = null
 

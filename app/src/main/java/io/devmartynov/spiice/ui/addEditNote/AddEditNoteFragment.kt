@@ -32,9 +32,7 @@ class AddEditNoteFragment : Fragment() {
     private lateinit var binding: FragmentAddEditNoteBinding
     private var note: Note? = null
 
-    private val noteDetailViewModel: NoteDetailViewModel by viewModels {
-        ViewModelFactory(requireActivity().application)
-    }
+    private val noteDetailViewModel: NoteDetailViewModel by viewModels { ViewModelFactory(null) }
 
     private var hasScheduleDateChanged = false
     private val calendar = Calendar.getInstance()

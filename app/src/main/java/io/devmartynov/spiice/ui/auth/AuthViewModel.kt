@@ -1,12 +1,11 @@
 package io.devmartynov.spiice.ui.auth
 
 import android.app.Application
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import io.devmartynov.spiice.R
-import io.devmartynov.spiice.db.AppDatabase
 import io.devmartynov.spiice.model.user.User
 import io.devmartynov.spiice.model.user.UserPreferences
-import io.devmartynov.spiice.repository.user.UserRepositoryImpl
+import io.devmartynov.spiice.repository.user.UserRepository
 import io.devmartynov.spiice.utils.FormAttributes
 import io.devmartynov.spiice.utils.auth.generateToken
 import io.devmartynov.spiice.utils.auth.getHashedPassword
@@ -15,22 +14,21 @@ import io.devmartynov.spiice.validate
 
 /**
  * VM авторизации
+ * @param userRepository репозиторий пользователя
  */
-class AuthViewModel(private val application: Application) : ViewModel(), Auth, AuthValidation {
+class AuthViewModel(private val userRepository: UserRepository, application: Application) : AndroidViewModel(application), Auth, AuthValidation {
     private val userPreferences = UserPreferences.get()
-    private val userRepository = UserRepositoryImpl(
-        AppDatabase.getDatabase(application).userDao()
-    )
 
     override fun signIn(email: String, password: String): AuthResult {
         val user = userRepository.getUser(email)
         val authErrors = arrayListOf<String>()
+        val app = getApplication<Application>()
 
         if (user == null) { // пользователя нет в базе
-            authErrors.add(application.resources.getString(R.string.auth_sign_in_error))
+            authErrors.add(app.resources.getString(R.string.auth_sign_in_error))
         } else { // пользователь есть в базе
             if (!checkPassword(password, user.passwordHash)) { // ввел неверный пароль
-                authErrors.add(application.resources.getString(R.string.auth_sign_in_error))
+                authErrors.add(app.resources.getString(R.string.auth_sign_in_error))
             } else { // авторизация пользователя
                 val authToken = generateToken()
                 userRepository.addUser(user.copy(
@@ -71,7 +69,7 @@ class AuthViewModel(private val application: Application) : ViewModel(), Auth, A
                 id = newUser.id
             )
         } else { // пользователь с таким email уже есть в базе
-            authErrors.add(application.resources.getString(R.string.auth_sign_up_error))
+            authErrors.add(getApplication<Application>().resources.getString(R.string.auth_sign_up_error))
         }
 
         return object : AuthResult {

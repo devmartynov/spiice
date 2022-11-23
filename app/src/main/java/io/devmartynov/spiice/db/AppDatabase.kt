@@ -27,12 +27,11 @@ abstract class AppDatabase : RoomDatabase() {
         private const val DATABASE_NAME = "APP_DATABASE"
         private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase {
-            val tempInstance = INSTANCE
-            if (tempInstance != null) {
-                return tempInstance
-            }
+        fun get(): AppDatabase {
+            return INSTANCE ?: throw IllegalStateException("AppDatabase must be initialized")
+        }
 
+        fun initialize(context: Context) {
             synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
@@ -42,7 +41,6 @@ abstract class AppDatabase : RoomDatabase() {
                     .allowMainThreadQueries()
                     .build()
                 INSTANCE = instance
-                return instance
             }
         }
     }

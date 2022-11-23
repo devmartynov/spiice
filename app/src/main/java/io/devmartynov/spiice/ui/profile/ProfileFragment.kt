@@ -16,9 +16,7 @@ import io.devmartynov.spiice.ui.auth.LoginFragment
  */
 class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
-    private val viewModel: ProfileViewModel by viewModels {
-        ViewModelFactory(requireActivity().application)
-    }
+    private val viewModel: ProfileViewModel by viewModels { ViewModelFactory(null) }
 
     override fun onCreateView(
         inflater: LayoutInflater,

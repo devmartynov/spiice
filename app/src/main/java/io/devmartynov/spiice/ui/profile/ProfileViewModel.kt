@@ -1,20 +1,20 @@
 package io.devmartynov.spiice.ui.profile
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
-import io.devmartynov.spiice.db.AppDatabase
 import io.devmartynov.spiice.model.user.UserPreferences
-import io.devmartynov.spiice.repository.note.NotesRepositoryImpl
-import io.devmartynov.spiice.repository.user.UserRepositoryImpl
+import io.devmartynov.spiice.repository.note.NotesRepository
+import io.devmartynov.spiice.repository.user.UserRepository
 
-class ProfileViewModel(application: Application) : ViewModel() {
+/**
+ * VM профиля
+ * @param userRepository репозиторий пользователя
+ * @param notesRepository репозиторий заметок
+ */
+class ProfileViewModel(
+    private val userRepository: UserRepository,
+    private val notesRepository: NotesRepository
+) : ViewModel() {
     private val userPreferences = UserPreferences.get()
-    private val userRepository = UserRepositoryImpl(
-        AppDatabase.getDatabase(application).userDao()
-    )
-    private val noteRepository = NotesRepositoryImpl(
-        AppDatabase.getDatabase(application).noteDao()
-    )
 
     companion object {
         const val ZERO_NOTES = 0L
@@ -35,10 +35,10 @@ class ProfileViewModel(application: Application) : ViewModel() {
     }
 
     fun getNotesCount(): Long {
-        return noteRepository.getUserNotesCount(userPreferences.userId)
+        return notesRepository.getUserNotesCount(userPreferences.userId)
     }
 
     fun deleteAllNotes() {
-        noteRepository.deleteAllUserNotes(userPreferences.userId)
+        notesRepository.deleteAllUserNotes(userPreferences.userId)
     }
 }

@@ -1,22 +1,17 @@
 package io.devmartynov.spiice.ui.notesList
 
-import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.devmartynov.spiice.db.AppDatabase
-import io.devmartynov.spiice.repository.note.NotesRepositoryImpl
 import io.devmartynov.spiice.model.note.Note
 import io.devmartynov.spiice.model.user.UserPreferences
+import io.devmartynov.spiice.repository.note.NotesRepository
 import java.util.UUID
 
 /**
  * VM списка заметок
+ * @param repository репозиторий заметок
  */
-class NotesViewModel(application: Application) : ViewModel() {
-    private val repository = NotesRepositoryImpl(
-        AppDatabase.getDatabase(application).noteDao()
-    )
-
+class NotesViewModel(private val repository: NotesRepository) : ViewModel() {
     private var isInitSearch = true
     private var _notesBeforeFilter = arrayListOf<Note>()
     private var _notes = arrayListOf<Note>()
