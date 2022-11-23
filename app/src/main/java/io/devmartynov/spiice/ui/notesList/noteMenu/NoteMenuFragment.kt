@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.databinding.FragmentNoteMenuBinding
-import io.devmartynov.spiice.model.Note
+import io.devmartynov.spiice.model.note.Note
 import io.devmartynov.spiice.utils.timer.callback
 
 /**
