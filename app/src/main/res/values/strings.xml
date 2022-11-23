@@ -17,7 +17,7 @@
     <string name="log_in_label">Log-in</string>
     <string name="to_sign_up_label">Return to Sign-up</string>
     <string name="add_new_note">Add new</string>
-    <string name="logout">Logout</string>
+    <string name="sign_out">Выйти</string>
     <string name="add_new">Add new</string>
     <string name="add_note">Add note</string>
     <string name="back">Back</string>
@@ -40,4 +40,16 @@
     <string name="note_create_date_preview">Дата создания:</string>
     <string name="note_schedule_date_preview">Запланирована на:</string>
     <string name="note_no_schedule_date_label">Не запланирована</string>
+    <string name="auth_sign_in_error">Неправильный логин или пароль</string>
+    <string name="auth_sign_up_error">Попробуйте другой email</string>
+    <string name="auth_successful">Успешный вход!</string>
+    <string name="notes">Заметки</string>
+    <string name="all_notes">Все заметки</string>
+    <string name="notes_search">Поиск заметок</string>
+    <string name="notes_create">Создание заметок</string>
+    <string name="profile">Профиль</string>
+    <string name="delete_profile">Удалить профиль</string>
+    <string name="delete_all_notes">Удалить все заметки</string>
+    <string name="notes_count">%d заметки</string>
+    <string name="search">Поиск</string>
 </resources>

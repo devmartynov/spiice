@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <integer name="font_weight_black">900</integer>
     <integer name="font_weight_bold">700</integer>
     <integer name="font_weight_medium">500</integer>
     <integer name="feature_max_lines">2</integer>

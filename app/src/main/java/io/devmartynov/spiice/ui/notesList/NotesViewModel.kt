@@ -1,38 +1,38 @@
 package io.devmartynov.spiice.ui.notesList
 
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.devmartynov.spiice.repository.NotesRepository
-import io.devmartynov.spiice.repository.NotesRepositoryImpl
-import io.devmartynov.spiice.model.Note
+import io.devmartynov.spiice.db.AppDatabase
+import io.devmartynov.spiice.repository.note.NotesRepositoryImpl
+import io.devmartynov.spiice.model.note.Note
+import io.devmartynov.spiice.model.user.UserPreferences
 import java.util.UUID
 
-class NotesViewModel: ViewModel() {
-    private val repository: NotesRepository = NotesRepositoryImpl
+/**
+ * VM списка заметок
+ */
+class NotesViewModel(application: Application) : ViewModel() {
+    private val repository = NotesRepositoryImpl(
+        AppDatabase.getDatabase(application).noteDao()
+    )
 
+    private var isInitSearch = true
+    private var _notesBeforeFilter = arrayListOf<Note>()
     private var _notes = arrayListOf<Note>()
     val notes = MutableLiveData<List<Note>>(_notes)
 
     fun loadNotes() {
         val list = repository
-            .getNotes()
-            .sortedBy { note -> note.createTime }
+            .getUserNotes(UserPreferences.get().userId)
+            .sortedByDescending { note -> note.createTime }
         _notes = ArrayList(list)
         updateLiveDataList()
     }
 
-    fun deleteAllNotes(): Boolean {
-        if (repository.deleteAllNotes()) {
-            _notes.clear()
-            updateLiveDataList()
-            return true
-        }
-        return false
-    }
-
-    fun deleteNote(noteId: UUID): Boolean {
-        if (repository.deleteNote(noteId)) {
-            _notes.removeIf { note -> note.id == noteId }
+    fun deleteNote(note: Note): Boolean {
+        if (repository.deleteNote(note)) {
+            _notes.removeIf { _note -> _note.id == note.id }
             updateLiveDataList()
             return true
         }
@@ -50,6 +50,27 @@ class NotesViewModel: ViewModel() {
 
     fun getNote(noteId: UUID): Note? {
         return repository.getNote(noteId)
+    }
+
+    fun searchNotes(value: String) {
+        if (isInitSearch) {
+            _notesBeforeFilter = arrayListOf()
+            _notesBeforeFilter.addAll(_notes)
+            isInitSearch = false
+        }
+        _notes = _notesBeforeFilter.filter { note ->
+            note.title.contains(value, ignoreCase = true)
+                    || note.content.contains(value, ignoreCase = true)
+        } as ArrayList<Note>
+        updateLiveDataList()
+    }
+
+    fun resetSearch() {
+        _notesBeforeFilter = arrayListOf()
+        _notes.addAll(_notesBeforeFilter)
+        _notesBeforeFilter = arrayListOf()
+        updateLiveDataList()
+        isInitSearch = true
     }
 
     private fun updateLiveDataList() {
