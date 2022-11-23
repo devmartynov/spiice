@@ -5,39 +5,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.databinding.FragmentNoteMenuBinding
 import io.devmartynov.spiice.model.Note
-import io.devmartynov.spiice.ui.notesList.NotesViewModel
-import java.io.Serializable
-import java.util.*
+import io.devmartynov.spiice.utils.timer.callback
 
 /**
  * Меню заметки с действиями над ней
  */
 class NoteMenuFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentNoteMenuBinding
-    private val viewModel: NotesViewModel by activityViewModels()
-    private var note: Note? = null
-    private var callbacks: Callbacks? = null
+    var note: Note? = null
+    var goToEditScreen: callback? = null
+    var safeDeleteNote: callback? = null
 
     companion object {
         const val TAG = "NoteMenuFragment"
-        private const val NOTE_ID_KEY = "note_id_key"
-        private const val CALLBACKS_KEY = "callbacks_key"
         private const val SHARE_CONTENT_TYPE = "text/plain"
-
-        fun newInstance(noteId: UUID, callbacks: Callbacks): NoteMenuFragment {
-            return NoteMenuFragment().apply {
-                arguments = bundleOf(
-                    NOTE_ID_KEY to noteId,
-                    CALLBACKS_KEY to callbacks
-                )
-            }
-        }
     }
 
     override fun onCreateView(
@@ -52,24 +37,34 @@ class NoteMenuFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        callbacks = arguments?.get(CALLBACKS_KEY) as? Callbacks
-            ?: throw IllegalArgumentException("You must pass callbacks to this fragment")
-        val noteId = arguments?.get(NOTE_ID_KEY) as? UUID
-            ?: throw IllegalArgumentException("You must pass note id to this fragment")
-        note = viewModel.getNote(noteId)
-            ?: throw IllegalArgumentException("No note was found by passed id: $noteId")
+        checkArguments()
 
         binding.share.setOnClickListener {
             shareNote()
             dismiss()
         }
         binding.edit.setOnClickListener {
-            callbacks?.goToEditScreen()
+            goToEditScreen?.invoke()
             dismiss()
         }
         binding.delete.setOnClickListener {
-            callbacks?.safeDeleteNote()
+            safeDeleteNote?.invoke()
             dismiss()
+        }
+    }
+
+    /**
+     * Проверяет наличие всех необходимых данных для рыботы фрагмента
+     */
+    private fun checkArguments() {
+        if (note == null) {
+            throw IllegalArgumentException("You must pass note to fragment")
+        }
+        if (goToEditScreen == null) {
+            throw IllegalArgumentException("You must pass goToEditScreen callback to fragment")
+        }
+        if (safeDeleteNote == null) {
+            throw IllegalArgumentException("You must pass safeDeleteNote callback to fragment")
         }
     }
 
@@ -88,14 +83,5 @@ class NoteMenuFragment : BottomSheetDialogFragment() {
                     Intent.createChooser(intent, getString(R.string.share_dialog_title))
                 )
             }
-    }
-
-    /**
-     * Колбеки для экшенов.
-     * По сути это костыль.
-     */
-    interface Callbacks : Serializable {
-        fun goToEditScreen()
-        fun safeDeleteNote()
     }
 }

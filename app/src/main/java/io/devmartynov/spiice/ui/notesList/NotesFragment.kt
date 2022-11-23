@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -27,7 +27,7 @@ private const val NOTES_FRAGMENT_TAG = "FRAGMENT_TAG"
  */
 class NotesFragment : Fragment() {
     private lateinit var binding: FragmentNotesBinding
-    private val viewModel: NotesViewModel by activityViewModels()
+    private val viewModel: NotesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +54,7 @@ class NotesFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = NotesAdapter(
                 onNoteClick = { note, _ -> showNoteDetailInfo(note) },
-                onMenuClick = { note, position -> showNoteMenu(note.id, position) }
+                onMenuClick = { note, position -> showNoteMenu(note, position) }
             )
         }
         ItemTouchHelper(getSimpleCallback()).attachToRecyclerView(binding.notesRecycler)
@@ -113,23 +113,16 @@ class NotesFragment : Fragment() {
 
     /**
      * Открывает боттом шит диалог - меню для заметки.
-     * @param noteId id заметки
+     * @param note заметка
      * @param position позиция заметки в адаптере
      */
-    private fun showNoteMenu(noteId: UUID, position: Int) {
-        NoteMenuFragment
-            .newInstance(
-                noteId = noteId,
-                callbacks = object : NoteMenuFragment.Callbacks {
-                    override fun goToEditScreen() {
-                        goToAddEditScreen(noteId)
-                    }
-
-                    override fun safeDeleteNote() {
-                        safeDeleteNoteByPosition(position)
-                    }
-                }
-            )
+    private fun showNoteMenu(note: Note, position: Int) {
+        NoteMenuFragment()
+            .apply {
+                this.note = note
+                goToEditScreen = { goToAddEditScreen(note.id) }
+                safeDeleteNote = { safeDeleteNoteByPosition(position) }
+            }
             .show(parentFragmentManager, NoteMenuFragment.TAG)
     }
 
