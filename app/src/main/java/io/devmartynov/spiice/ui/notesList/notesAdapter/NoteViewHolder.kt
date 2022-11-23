@@ -6,8 +6,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import io.devmartynov.spiice.R
-import io.devmartynov.spiice.model.Note
-import io.devmartynov.spiice.model.NoteType
+import io.devmartynov.spiice.model.note.Note
+import io.devmartynov.spiice.model.note.NoteType
 
 /**
  * Вьюхолдер для адаптера списка заметок

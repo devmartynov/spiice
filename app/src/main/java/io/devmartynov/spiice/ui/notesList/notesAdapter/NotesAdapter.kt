@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import io.devmartynov.spiice.R
-import io.devmartynov.spiice.model.Note
+import io.devmartynov.spiice.model.note.Note
 
 typealias NoteClickHandler = (note: Note, position: Int) -> Unit
 

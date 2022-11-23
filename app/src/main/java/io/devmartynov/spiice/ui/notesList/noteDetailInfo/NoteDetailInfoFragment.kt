@@ -8,7 +8,7 @@ import androidx.core.os.bundleOf
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.databinding.FragmentNoteDetailInfoBinding
-import io.devmartynov.spiice.model.Note
+import io.devmartynov.spiice.model.note.Note
 
 /**
  * Детальная информация заметки
