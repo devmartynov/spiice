@@ -40,7 +40,7 @@ class UserPreferences private constructor(context: Context) : AuthState {
     }
 
     companion object {
-        const val USER_SETTINGS = "user_settings"
+        private const val USER_SETTINGS = "user_settings"
         const val USER_TOKEN = "user_token"
         const val USER_EMAIL = "user_email"
         const val USER_FIRST_NAME = "user_first_name"
