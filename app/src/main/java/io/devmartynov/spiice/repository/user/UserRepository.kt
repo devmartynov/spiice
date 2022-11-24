@@ -8,25 +8,19 @@ import java.util.UUID
  */
 interface UserRepository {
     /**
-     * Получает пользователя по id
-     * @param id id пользователя
-     */
-    fun getUser(id: UUID): User?
-
-    /**
      * Получает пользователя по email
      * @param email email пользователя
      */
-    fun getUser(email: String): User?
+    suspend fun getUser(email: String): User?
 
     /**
      * Добавляет пользователя в базу. Если пользователь уже есть, то обновляет все его поля
      * @param user пользователь
      */
-    fun addUser(user: User)
+    suspend fun addUser(user: User)
 
     /**
      * Удаляет пользователя из базы
      */
-    fun deleteUser(id: UUID)
+    suspend fun deleteUser(id: UUID)
 }

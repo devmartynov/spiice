@@ -11,50 +11,34 @@ interface NotesRepository {
      * Добавляет новую заметку
      * @param note новая заметка
      */
-    fun addNote(note: Note): Boolean
+    suspend fun addNote(note: Note): Boolean
 
     /**
      * Обновляет заметку
      * @param note заметка на которую будет заменена
      */
-    fun updateNote(note: Note): Boolean
+    suspend fun updateNote(note: Note): Boolean
 
     /**
      * Удаляет заметку
      * @param note заметка
      */
-    fun deleteNote(note: Note): Boolean
-
-    /**
-     * Список заметок
-     */
-    fun getNotes(): List<Note>
+    suspend fun deleteNote(note: Note): Boolean
 
     /**
      * Удаляет все заметки
      */
-    fun deleteAllNotes(): Boolean
-
-    /**
-     * Удаляет все заметки
-     */
-    fun deleteAllUserNotes(userId: UUID): Boolean
-
-    /**
-     * Получает заметку по id
-     * @param id id заметки
-     */
-    fun getNote(id: UUID): Note?
+    suspend fun deleteAllUserNotes(userId: UUID): Boolean
 
     /**
      * Получает все заметки пользователя
      * @param id id пользователя
      */
-    fun getUserNotes(id: UUID): List<Note>
+    suspend fun getUserNotes(id: UUID): List<Note>
 
     /**
      * Получает кол-во заметок пользователя
      * @param userId id пользователя
      */
-    fun getUserNotesCount(userId: UUID): Long
+    suspend fun getUserNotesCount(userId: UUID): Long
 }

@@ -2,84 +2,105 @@ package io.devmartynov.spiice.ui.auth
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.model.user.User
 import io.devmartynov.spiice.model.user.UserPreferences
 import io.devmartynov.spiice.repository.user.UserRepository
 import io.devmartynov.spiice.utils.FormAttributes
+import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
 import io.devmartynov.spiice.utils.auth.generateToken
 import io.devmartynov.spiice.utils.auth.getHashedPassword
 import io.devmartynov.spiice.utils.validation.ValidationResult
 import io.devmartynov.spiice.validate
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * VM авторизации
  * @param userRepository репозиторий пользователя
+ * @param application конекст приложения
  */
 class AuthViewModel(private val userRepository: UserRepository, application: Application) : AndroidViewModel(application), Auth, AuthValidation {
     private val userPreferences = UserPreferences.get()
+    private var _authState = MutableLiveData<AsyncOperationState>(AsyncOperationState.Idle)
+    val authState: LiveData<AsyncOperationState> = _authState
 
-    override fun signIn(email: String, password: String): AuthResult {
-        val user = userRepository.getUser(email)
-        val authErrors = arrayListOf<String>()
-        val app = getApplication<Application>()
+    override fun signIn(email: String, password: String) {
+        _authState.value = AsyncOperationState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
+            val user = userRepository.getUser(email)
+            val authErrors = arrayListOf<String>()
+            val app = getApplication<Application>()
 
-        if (user == null) { // пользователя нет в базе
-            authErrors.add(app.resources.getString(R.string.auth_sign_in_error))
-        } else { // пользователь есть в базе
-            if (!checkPassword(password, user.passwordHash)) { // ввел неверный пароль
+            if (user == null) { // пользователя нет в базе
                 authErrors.add(app.resources.getString(R.string.auth_sign_in_error))
-            } else { // авторизация пользователя
-                val authToken = generateToken()
-                userRepository.addUser(user.copy(
-                    token = authToken
-                ))
-                userPreferences.token = authToken
+            } else { // пользователь есть в базе
+                if (!checkPassword(password, user.passwordHash)) { // ввел неверный пароль
+                    authErrors.add(app.resources.getString(R.string.auth_sign_in_error))
+                } else { // авторизация пользователя
+                    val authToken = generateToken()
+                    userRepository.addUser(user.copy(
+                        token = authToken
+                    ))
+                    userPreferences.token = authToken
+                }
             }
-        }
-
-        return object : AuthResult {
-            override fun hasAuthErrors(): Boolean {
-                return authErrors.isNotEmpty()
-            }
-
-            override fun getAuthErrors(): List<String> {
-                return authErrors
-            }
+            _authState.postValue(
+                AsyncOperationState.Success(
+                    object : AuthResult {
+                        override fun hasAuthErrors(): Boolean {
+                            return authErrors.isNotEmpty()
+                        }
+                        override fun getAuthErrors(): List<String> {
+                            return authErrors
+                        }
+                    }
+                )
+            )
         }
     }
 
-    override fun signUp(email: String, firstName: String, lastName: String, password: String): AuthResult {
-        val user = userRepository.getUser(email)
-        val authErrors = arrayListOf<String>()
+    override fun signUp(email: String, firstName: String, lastName: String, password: String) {
+        _authState.value = AsyncOperationState.Loading
 
-        if (user == null) { // пользователя еще нет в базе
-            val newUser = User(
-                email = email,
-                firstName = firstName,
-                lastName = lastName,
-                passwordHash = getHashedPassword(password),
-            )
-            userRepository.addUser(newUser)
-            userPreferences.setUserInfo(
-                token = newUser.token,
-                email = newUser.email,
-                firstName = newUser.firstName,
-                lastName = newUser.lastName,
-                id = newUser.id
-            )
-        } else { // пользователь с таким email уже есть в базе
-            authErrors.add(getApplication<Application>().resources.getString(R.string.auth_sign_up_error))
-        }
+        viewModelScope.launch(Dispatchers.IO) {
+            val user = userRepository.getUser(email)
+            val authErrors = arrayListOf<String>()
 
-        return object : AuthResult {
-            override fun hasAuthErrors(): Boolean {
-                return authErrors.isNotEmpty()
+            if (user == null) { // пользователя еще нет в базе
+                val newUser = User(
+                    email = email,
+                    firstName = firstName,
+                    lastName = lastName,
+                    passwordHash = getHashedPassword(password),
+                )
+                userRepository.addUser(newUser)
+                userPreferences.setUserInfo(
+                    token = newUser.token,
+                    email = newUser.email,
+                    firstName = newUser.firstName,
+                    lastName = newUser.lastName,
+                    id = newUser.id
+                )
+            } else { // пользователь с таким email уже есть в базе
+                authErrors.add(getApplication<Application>().resources.getString(R.string.auth_sign_up_error))
             }
 
-            override fun getAuthErrors(): List<String> {
-                return authErrors
-            }
+            _authState.postValue(
+                AsyncOperationState.Success(
+                    object : AuthResult {
+                        override fun hasAuthErrors(): Boolean {
+                            return authErrors.isNotEmpty()
+                        }
+                        override fun getAuthErrors(): List<String> {
+                            return authErrors
+                        }
+                    }
+                )
+            )
         }
     }
 

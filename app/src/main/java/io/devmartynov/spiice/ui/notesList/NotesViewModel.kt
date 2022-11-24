@@ -1,11 +1,15 @@
 package io.devmartynov.spiice.ui.notesList
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import io.devmartynov.spiice.model.note.Note
 import io.devmartynov.spiice.model.user.UserPreferences
 import io.devmartynov.spiice.repository.note.NotesRepository
-import java.util.UUID
+import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * VM списка заметок
@@ -15,36 +19,39 @@ class NotesViewModel(private val repository: NotesRepository) : ViewModel() {
     private var isInitSearch = true
     private var _notesBeforeFilter = arrayListOf<Note>()
     private var _notes = arrayListOf<Note>()
-    val notes = MutableLiveData<List<Note>>(_notes)
+    private var _gettingNotesState = MutableLiveData<AsyncOperationState>(AsyncOperationState.Idle)
+    var deletedNote: Note? = null
+    var deletedNotePosition: Int? = null
+    val gettingNotesState: LiveData<AsyncOperationState> = _gettingNotesState
 
     fun loadNotes() {
-        val list = repository
-            .getUserNotes(UserPreferences.get().userId)
-            .sortedByDescending { note -> note.createTime }
-        _notes = ArrayList(list)
-        updateLiveDataList()
+       _gettingNotesState.value = AsyncOperationState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
+            val list = repository
+                .getUserNotes(UserPreferences.get().userId)
+                .sortedByDescending { note -> note.createTime }
+            _notes = ArrayList(list)
+            updateGettingNotesState(AsyncOperationState.Success(_notes))
+        }
     }
 
-    fun deleteNote(note: Note): Boolean {
-        if (repository.deleteNote(note)) {
+    fun deleteNote(note: Note) {
+        _gettingNotesState.value = AsyncOperationState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteNote(note)
             _notes.removeIf { _note -> _note.id == note.id }
-            updateLiveDataList()
-            return true
+            updateGettingNotesState(AsyncOperationState.Success(_notes))
         }
-        return false
     }
 
-    fun addNote(position: Int, note: Note): Boolean {
-        if (repository.addNote(note)) {
+    fun addNote(position: Int, note: Note) {
+        _gettingNotesState.value = AsyncOperationState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.addNote(note)
             _notes.add(position, note)
-            updateLiveDataList()
-            return true
+            setDeletedNote(null, null)
+            updateGettingNotesState(AsyncOperationState.Success(_notes))
         }
-        return false
-    }
-
-    fun getNote(noteId: UUID): Note? {
-        return repository.getNote(noteId)
     }
 
     fun searchNotes(value: String) {
@@ -57,18 +64,21 @@ class NotesViewModel(private val repository: NotesRepository) : ViewModel() {
             note.title.contains(value, ignoreCase = true)
                     || note.content.contains(value, ignoreCase = true)
         } as ArrayList<Note>
-        updateLiveDataList()
+        updateGettingNotesState(AsyncOperationState.Success(_notes))
     }
 
     fun resetSearch() {
         _notesBeforeFilter = arrayListOf()
         _notes.addAll(_notesBeforeFilter)
         _notesBeforeFilter = arrayListOf()
-        updateLiveDataList()
+        updateGettingNotesState(AsyncOperationState.Success(_notes))
         isInitSearch = true
     }
-
-    private fun updateLiveDataList() {
-        notes.value = _notes
+    fun setDeletedNote(note: Note?, position: Int?) {
+       deletedNote = note
+       deletedNotePosition = position
+    }
+    private fun updateGettingNotesState(value: AsyncOperationState) {
+       _gettingNotesState.postValue(value)
     }
 }

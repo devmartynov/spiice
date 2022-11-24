@@ -15,6 +15,7 @@ import io.devmartynov.spiice.utils.validation.ValidationResult
 import io.devmartynov.spiice.databinding.FragmentLoginBinding
 import io.devmartynov.spiice.ui.ViewModelFactory
 import io.devmartynov.spiice.ui.notesList.NotesFragment
+import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
 import io.devmartynov.spiice.utils.text.beautifyListString
 
 /**
@@ -39,7 +40,32 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        viewModel.authState.observe(viewLifecycleOwner) { authState ->
+            when (authState) {
+                is AsyncOperationState.Loading -> {
+                }
+                is AsyncOperationState.Success -> {
+                    val authResult = authState.data as AuthResult
+                    val authMessage = if (authResult.hasAuthErrors()) {
+                        beautifyListString(authResult.getAuthErrors())
+                    } else {
+                        getString(R.string.auth_successful)
+                    }
+
+                    Toast.makeText(requireContext(), authMessage, Toast.LENGTH_SHORT).show()
+
+                    if (!authResult.hasAuthErrors()) {
+                        goToNoteList()
+                    }
+                }
+                is AsyncOperationState.Failure -> {
+                    Toast.makeText(requireContext(), getString(R.string.failure_note_creation_message), Toast.LENGTH_SHORT).show()
+                }
+                is AsyncOperationState.Idle -> {
+                }
+            }
+        }
+        bottomNav = requireActivity().findViewById(R.id.bottom_navigation)
         bottomNav?.visibility = View.GONE
 
         binding.email.doAfterTextChanged {
@@ -95,18 +121,7 @@ class LoginFragment : Fragment() {
         updateUiErrors(passwordErrors, FormAttributes.PASSWORD)
 
         if (!emailErrors.hasErrors() && !passwordErrors.hasErrors()) {
-            val authResult = viewModel.signIn(email, password)
-            val authMessage = if (authResult.hasAuthErrors()) {
-                beautifyListString(authResult.getAuthErrors())
-            } else {
-                getString(R.string.auth_successful)
-            }
-
-            Toast.makeText(requireContext(), authMessage, Toast.LENGTH_SHORT).show()
-
-            if (!authResult.hasAuthErrors()) {
-                goToNoteList()
-            }
+            viewModel.signIn(email, password)
         }
     }
 

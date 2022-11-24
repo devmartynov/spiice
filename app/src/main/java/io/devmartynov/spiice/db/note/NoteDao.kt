@@ -9,28 +9,19 @@ import java.util.UUID
  */
 @Dao
 interface NoteDao {
-    @Query("SELECT * FROM note WHERE id=(:id)")
-    fun getNote(id: UUID): Note?
-
-    @Query("SELECT * FROM note")
-    fun getNotes(): List<Note>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addNote(note: Note)
+    suspend fun addNote(note: Note)
 
     @Delete
-    fun deleteNote(note: Note)
-
-    @Query("DELETE FROM note")
-    fun deleteAllNotes()
+    suspend fun deleteNote(note: Note)
 
     @Query("DELETE FROM note WHERE userCreatorId=(:userId)")
-    fun deleteAllUserNotes(userId: UUID)
+    suspend fun deleteAllUserNotes(userId: UUID)
 
     @Query("SELECT * FROM note WHERE userCreatorId=(:userId)")
-    fun getUserNotes(userId: UUID): List<Note>
+    suspend fun getUserNotes(userId: UUID): List<Note>
 
     @Query("SELECT COUNT(id) FROM note WHERE userCreatorId=(:userId)")
-    fun getUserNotesCount(userId: UUID): Long
+    suspend fun getUserNotesCount(userId: UUID): Long
 
 }
