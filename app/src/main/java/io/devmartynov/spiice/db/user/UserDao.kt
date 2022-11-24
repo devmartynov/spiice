@@ -9,15 +9,12 @@ import java.util.UUID
  */
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM user WHERE id=(:id)")
-    fun getUser(id: UUID): User?
-
     @Query("SELECT * FROM user WHERE email=(:email)")
-    fun getUser(email: String): User?
+    suspend fun getUser(email: String): User?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addUser(user: User)
+    suspend fun addUser(user: User)
 
     @Query("DELETE FROM user WHERE id=(:id)")
-    fun deleteUser(id: UUID)
+    suspend fun deleteUser(id: UUID)
 }

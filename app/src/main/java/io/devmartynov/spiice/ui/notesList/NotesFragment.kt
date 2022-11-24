@@ -21,6 +21,7 @@ import io.devmartynov.spiice.ui.ViewModelFactory
 import io.devmartynov.spiice.ui.notesList.noteDetailInfo.NoteDetailInfoFragment
 import io.devmartynov.spiice.ui.notesList.noteMenu.NoteMenuFragment
 import io.devmartynov.spiice.ui.notesList.notesAdapter.NotesAdapter
+import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
 
 const val NOTES_FRAGMENT_TAG = "FRAGMENT_TAG"
 
@@ -52,7 +53,37 @@ class NotesFragment : Fragment() {
         val bottomNav = activity.findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.visibility = View.VISIBLE
 
-        viewModel.notes.observe(viewLifecycleOwner) { notes -> updateUiList(notes) }
+        viewModel.gettingNotesState.observe(viewLifecycleOwner) { notesState ->
+            when (notesState) {
+                is AsyncOperationState.Loading -> {
+                }
+                is AsyncOperationState.Success -> {
+                    val notes = notesState.data as List<Note>
+                    updateUiList(notes)
+
+                    // пользвоатель удалил заметку, надо показать снэкбар
+                    if (viewModel.deletedNote != null) {
+                        Snackbar
+                            .make(
+                                binding.notesRecycler,
+                                getString(R.string.note_undo_remove_action_label),
+                                Snackbar.LENGTH_SHORT
+                            )
+                            .setAction(getString(R.string.undo)) {
+                                viewModel.addNote(
+                                    viewModel.deletedNotePosition!!,
+                                    viewModel.deletedNote!!
+                                )
+                            }
+                            .show()
+                    }
+                }
+                is AsyncOperationState.Failure -> {
+                }
+                is AsyncOperationState.Idle -> {
+                }
+            }
+        }
 
         binding.toggleSearchField.setOnClickListener { toggleSearchField() }
         binding.searchField.doAfterTextChanged { viewModel.searchNotes(it.toString()) }
@@ -160,17 +191,7 @@ class NotesFragment : Fragment() {
      */
     private fun safeDeleteNoteByPosition(position: Int) {
         val deletedNote = (binding.notesRecycler.adapter as NotesAdapter).getItem(position)
-        if (viewModel.deleteNote(deletedNote)) {
-            Snackbar
-                .make(
-                    binding.notesRecycler,
-                    getString(R.string.note_undo_remove_action_label),
-                    Snackbar.LENGTH_SHORT
-                )
-                .setAction(getString(R.string.undo)) {
-                    viewModel.addNote(position, deletedNote)
-                }
-                .show()
-        }
+        viewModel.setDeletedNote(deletedNote, position)
+        viewModel.deleteNote(deletedNote)
     }
 }

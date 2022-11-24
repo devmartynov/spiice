@@ -8,9 +8,8 @@ interface Auth {
      * Вход в систему
      * @param email email пользователя
      * @param password пароль для входа
-     * @return результат авторизации
      */
-    fun signIn(email: String, password: String): AuthResult
+    fun signIn(email: String, password: String)
 
     /**
      * Регистрация в системе
@@ -18,7 +17,6 @@ interface Auth {
      * @param firstName имя пользователя
      * @param lastName фамилия пользователя
      * @param password пароль для входа
-     * @return результат авторизации
      */
-    fun signUp(email: String, firstName: String, lastName: String, password: String): AuthResult
+    fun signUp(email: String, firstName: String, lastName: String, password: String)
 }

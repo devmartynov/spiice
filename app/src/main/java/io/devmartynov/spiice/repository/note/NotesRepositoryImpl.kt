@@ -9,44 +9,31 @@ import java.util.*
  */
 class NotesRepositoryImpl(private val noteDao: NoteDao) : NotesRepository {
 
-    override fun addNote(note: Note): Boolean {
+    override suspend fun addNote(note: Note): Boolean {
         noteDao.addNote(note)
         return true
     }
 
-    override fun updateNote(note: Note): Boolean {
+    override suspend fun updateNote(note: Note): Boolean {
         noteDao.addNote(note)
         return true
     }
 
-    override fun deleteNote(note: Note): Boolean {
+    override suspend fun deleteNote(note: Note): Boolean {
         noteDao.deleteNote(note)
         return true
     }
 
-    override fun getNotes(): List<Note> {
-        return noteDao.getNotes()
-    }
-
-    override fun getUserNotes(userId: UUID): List<Note> {
+    override suspend fun getUserNotes(userId: UUID): List<Note> {
         return noteDao.getUserNotes(userId)
     }
 
-    override fun deleteAllNotes(): Boolean {
-        noteDao.deleteAllNotes()
-        return true
-    }
-
-    override fun deleteAllUserNotes(userId: UUID): Boolean {
+    override suspend fun deleteAllUserNotes(userId: UUID): Boolean {
         noteDao.deleteAllUserNotes(userId)
         return true
     }
 
-    override fun getNote(noteId: UUID): Note? {
-        return noteDao.getNote(noteId)
-    }
-
-    override fun getUserNotesCount(userId: UUID): Long {
+    override suspend fun getUserNotesCount(userId: UUID): Long {
         return noteDao.getUserNotesCount(userId)
     }
 }

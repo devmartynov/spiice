@@ -10,6 +10,7 @@ import io.devmartynov.spiice.R
 import io.devmartynov.spiice.databinding.FragmentProfileBinding
 import io.devmartynov.spiice.ui.ViewModelFactory
 import io.devmartynov.spiice.ui.auth.LoginFragment
+import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
 
 /**
  * Экран профиля
@@ -30,15 +31,42 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.gettingNotesCountState.observe(viewLifecycleOwner) { gettingCountState ->
+            when (gettingCountState) {
+                is AsyncOperationState.Loading -> {
+
+                }
+                is AsyncOperationState.Success -> {
+                    setNotesCount(gettingCountState.data as Long)
+                }
+                is AsyncOperationState.Failure -> {
+                    setNotesCount(0L)
+                }
+                is AsyncOperationState.Idle -> {
+
+                }
+            }
+        }
+        viewModel.deletingProfileState.observe(viewLifecycleOwner) { deletingState ->
+            when (deletingState) {
+                is AsyncOperationState.Loading -> {
+                }
+                is AsyncOperationState.Success -> {
+                    goToSignIn()
+                }
+                is AsyncOperationState.Failure -> {
+                }
+                is AsyncOperationState.Idle -> {
+                }
+            }
+        }
+        viewModel.getNotesCount()
         binding.userFullName.text = viewModel.getUserFullName()
-        setNotesCount(viewModel.getNotesCount())
         binding.deleteProfile.setOnClickListener {
             viewModel.deleteProfile()
-            goToSignIn()
         }
         binding.deleteAllNotes.setOnClickListener {
             viewModel.deleteAllNotes()
-            setNotesCount(ProfileViewModel.ZERO_NOTES)
         }
         binding.signOut.setOnClickListener {
             viewModel.signOut()

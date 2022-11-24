@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -20,10 +19,9 @@ import io.devmartynov.spiice.model.note.Note
 import io.devmartynov.spiice.model.user.UserPreferences
 import io.devmartynov.spiice.ui.ViewModelFactory
 import io.devmartynov.spiice.ui.notesList.NotesFragment
+import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
 import io.devmartynov.spiice.validate
 import java.util.*
-
-private const val NOTE_ID_KEY = "noteId"
 
 /**
  * Экран добавления/редактирования заметки
@@ -55,13 +53,26 @@ class AddEditNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        note = getNoteFromArguments()
         setUpFormFields()
 
         with(requireContext() as AppCompatActivity) {
             supportActionBar?.setDisplayShowTitleEnabled(false)
         }
 
+        noteDetailViewModel.savingState.observe(viewLifecycleOwner) { asyncOperationState ->
+            when (asyncOperationState) {
+                is AsyncOperationState.Loading -> {
+                }
+                is AsyncOperationState.Success -> {
+                    goToNotesList()
+                }
+                is AsyncOperationState.Failure -> {
+                    Toast.makeText(requireContext(), getString(R.string.failure_note_creation_message), Toast.LENGTH_SHORT).show()
+                }
+                is AsyncOperationState.Idle -> {
+                }
+            }
+        }
         binding.title.doAfterTextChanged {
             updateUiErrors(
                 validate(it.toString(), FormAttributes.NOTE_TITLE), FormAttributes.NOTE_TITLE
@@ -99,15 +110,6 @@ class AddEditNoteFragment : Fragment() {
     }
 
     /**
-     * Получает заметку по переданному в аргументах id
-     * @return заметку если id был передан и по этому id есть заметка в базе, иначе null
-     */
-    private fun getNoteFromArguments(): Note? {
-        val noteId = arguments?.get(NOTE_ID_KEY) as UUID? ?: return null
-        return noteDetailViewModel.getNote(noteId)
-    }
-
-    /**
      * Сохраняет заметку в хранилище.
      * Перед сохранением валидирует поля формы. В случае наличия ошибок сохранения не происходит
      */
@@ -119,7 +121,7 @@ class AddEditNoteFragment : Fragment() {
         updateUiErrors(contentErrors, FormAttributes.NOTE_CONTENT)
 
         if (!titleErrors.hasErrors() && !contentErrors.hasErrors()) {
-            val isSuccessfully = noteDetailViewModel.saveNote(
+            noteDetailViewModel.saveNote(
                 Note(
                     id = note?.id ?: UUID.randomUUID(),
                     title = binding.title.editableText.toString(),
@@ -133,12 +135,6 @@ class AddEditNoteFragment : Fragment() {
                     }
                 )
             )
-
-            if (isSuccessfully) {
-                goToNotesList()
-            } else {
-                Toast.makeText(requireContext(), getString(R.string.failure_note_creation_message), Toast.LENGTH_SHORT).show()
-            }
         } else {
             Toast.makeText(requireContext(), getString(R.string.fix_errors_message), Toast.LENGTH_SHORT).show()
         }
@@ -184,16 +180,6 @@ class AddEditNoteFragment : Fragment() {
             } else {
                 binding.content.setBackgroundResource(R.drawable.form_field_bg)
                 binding.contentError.visibility = View.GONE
-            }
-        }
-    }
-
-    companion object {
-        fun newInstance(noteId: UUID?): AddEditNoteFragment {
-            return AddEditNoteFragment().apply {
-                arguments = bundleOf(
-                    NOTE_ID_KEY to noteId,
-                )
             }
         }
     }

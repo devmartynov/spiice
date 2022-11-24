@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                     nextFragment = NotesFragment()
                 }
                 R.id.notes_create -> {
-                    nextFragment = AddEditNoteFragment.newInstance(null)
+                    nextFragment = AddEditNoteFragment()
                 }
                 R.id.profile -> {
                     nextFragment = ProfileFragment()
