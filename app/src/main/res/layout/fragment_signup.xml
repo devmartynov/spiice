@@ -27,7 +27,7 @@
                 android:textFontWeight="@integer/font_weight_medium"
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/form_layout_header_margin_bottom"
-                android:text="@string/sign_up_label"/>
+                android:text="@string/sign_up_title"/>
 
         <LinearLayout
                 android:orientation="vertical"
