@@ -18,13 +18,11 @@ import io.devmartynov.spiice.R
 import io.devmartynov.spiice.databinding.FragmentNotesBinding
 import io.devmartynov.spiice.model.note.Note
 import io.devmartynov.spiice.ui.ViewModelFactory
-import io.devmartynov.spiice.ui.addEditNote.AddEditNoteFragment
 import io.devmartynov.spiice.ui.notesList.noteDetailInfo.NoteDetailInfoFragment
 import io.devmartynov.spiice.ui.notesList.noteMenu.NoteMenuFragment
 import io.devmartynov.spiice.ui.notesList.notesAdapter.NotesAdapter
-import java.util.*
 
-private const val NOTES_FRAGMENT_TAG = "FRAGMENT_TAG"
+const val NOTES_FRAGMENT_TAG = "FRAGMENT_TAG"
 
 /**
  * Экран списка заметок
@@ -132,19 +130,6 @@ class NotesFragment : Fragment() {
         (binding.notesRecycler.adapter as NotesAdapter).setList(notes)
     }
 
-    /**
-     * Переходит на экран создания/редактирования заметки.
-     * Если noteId есть, значит это переход на экран редактирования, этот id передаем в arguments,
-     * чтобы в AddEditNoteFragment заполнить поля формы значениями из заметки.
-     * @param noteId id заметки
-     */
-    private fun goToAddEditScreen(noteId: UUID? = null) {
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, AddEditNoteFragment.newInstance(noteId))
-            .addToBackStack(NOTES_FRAGMENT_TAG)
-            .commit()
-    }
 
     /**
      * Открывает боттом шит диалог - меню для заметки.
@@ -155,7 +140,6 @@ class NotesFragment : Fragment() {
         NoteMenuFragment()
             .apply {
                 this.note = note
-                goToEditScreen = { goToAddEditScreen(note.id) }
                 safeDeleteNote = { safeDeleteNoteByPosition(position) }
             }
             .show(parentFragmentManager, NoteMenuFragment.TAG)

@@ -9,6 +9,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.databinding.FragmentNoteMenuBinding
 import io.devmartynov.spiice.model.note.Note
+import io.devmartynov.spiice.ui.addEditNote.AddEditNoteFragment
+import io.devmartynov.spiice.ui.notesList.NOTES_FRAGMENT_TAG
 import io.devmartynov.spiice.utils.timer.callback
 
 /**
@@ -17,7 +19,6 @@ import io.devmartynov.spiice.utils.timer.callback
 class NoteMenuFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentNoteMenuBinding
     var note: Note? = null
-    var goToEditScreen: callback? = null
     var safeDeleteNote: callback? = null
 
     companion object {
@@ -44,7 +45,7 @@ class NoteMenuFragment : BottomSheetDialogFragment() {
             dismiss()
         }
         binding.edit.setOnClickListener {
-            goToEditScreen?.invoke()
+            goToAddEditScreen()
             dismiss()
         }
         binding.delete.setOnClickListener {
@@ -54,14 +55,24 @@ class NoteMenuFragment : BottomSheetDialogFragment() {
     }
 
     /**
+     * Переходит на экран редактирования заметки.
+     */
+    private fun goToAddEditScreen() {
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, AddEditNoteFragment().apply {
+                this.note = this@NoteMenuFragment.note
+            })
+            .addToBackStack(NOTES_FRAGMENT_TAG)
+            .commit()
+    }
+
+    /**
      * Проверяет наличие всех необходимых данных для рыботы фрагмента
      */
     private fun checkArguments() {
         if (note == null) {
             throw IllegalArgumentException("You must pass note to fragment")
-        }
-        if (goToEditScreen == null) {
-            throw IllegalArgumentException("You must pass goToEditScreen callback to fragment")
         }
         if (safeDeleteNote == null) {
             throw IllegalArgumentException("You must pass safeDeleteNote callback to fragment")

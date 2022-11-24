@@ -30,7 +30,7 @@ private const val NOTE_ID_KEY = "noteId"
  */
 class AddEditNoteFragment : Fragment() {
     private lateinit var binding: FragmentAddEditNoteBinding
-    private var note: Note? = null
+    var note: Note? = null
 
     private val noteDetailViewModel: NoteDetailViewModel by viewModels { ViewModelFactory(null) }
 
