@@ -9,11 +9,11 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
 import io.devmartynov.spiice.utils.FormAttributes
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.utils.validation.ValidationResult
 import io.devmartynov.spiice.databinding.FragmentSignupBinding
-import io.devmartynov.spiice.ui.ViewModelFactory
 import io.devmartynov.spiice.ui.notesList.NotesFragment
 import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
 import io.devmartynov.spiice.utils.text.beautifyListString
@@ -21,11 +21,10 @@ import io.devmartynov.spiice.utils.text.beautifyListString
 /**
  * Экран регистрации
  */
+@AndroidEntryPoint
 class SignUpFragment : Fragment() {
     private lateinit var binding: FragmentSignupBinding
-    private val viewModel: AuthViewModel by viewModels {
-        ViewModelFactory(requireActivity().application)
-    }
+    private val viewModel: AuthViewModel by viewModels()
     private var bottomNav: BottomNavigationView? = null
 
     override fun onCreateView(

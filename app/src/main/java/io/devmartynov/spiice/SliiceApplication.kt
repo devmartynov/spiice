@@ -1,15 +1,13 @@
 package io.devmartynov.spiice
 
 import android.app.Application
-import io.devmartynov.spiice.db.AppDatabase
-import io.devmartynov.spiice.model.user.UserPreferences
+import dagger.hilt.android.HiltAndroidApp
 import io.devmartynov.spiice.utils.timer.TransitionTimer
 
+@HiltAndroidApp
 class SliiceApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         TransitionTimer.initialize(5000)
-        UserPreferences.initialize(this)
-        AppDatabase.initialize(this)
     }
 }

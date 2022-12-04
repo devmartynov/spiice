@@ -6,18 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
 import io.devmartynov.spiice.utils.FormAttributes
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.utils.validation.ValidationResult
 import io.devmartynov.spiice.databinding.FragmentAddEditNoteBinding
 import io.devmartynov.spiice.model.note.Note
-import io.devmartynov.spiice.model.user.UserPreferences
-import io.devmartynov.spiice.ui.ViewModelFactory
 import io.devmartynov.spiice.ui.notesList.NotesFragment
 import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
 import io.devmartynov.spiice.validate
@@ -26,12 +24,11 @@ import java.util.*
 /**
  * Экран добавления/редактирования заметки
  */
+@AndroidEntryPoint
 class AddEditNoteFragment : Fragment() {
     private lateinit var binding: FragmentAddEditNoteBinding
+    private val noteDetailViewModel: NoteDetailViewModel by viewModels()
     var note: Note? = null
-
-    private val noteDetailViewModel: NoteDetailViewModel by viewModels { ViewModelFactory(null) }
-
     private var hasScheduleDateChanged = false
     private val calendar = Calendar.getInstance()
     private val datePickerSetListener =
@@ -54,10 +51,6 @@ class AddEditNoteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setUpFormFields()
-
-        with(requireContext() as AppCompatActivity) {
-            supportActionBar?.setDisplayShowTitleEnabled(false)
-        }
 
         noteDetailViewModel.savingState.observe(viewLifecycleOwner) { asyncOperationState ->
             when (asyncOperationState) {
@@ -126,7 +119,7 @@ class AddEditNoteFragment : Fragment() {
                     id = note?.id ?: UUID.randomUUID(),
                     title = binding.title.editableText.toString(),
                     content = binding.content.editableText.toString(),
-                    userCreatorId = UserPreferences.get().userId,
+                    userCreatorId = noteDetailViewModel.userId,
                     createTime = note?.createTime ?: System.currentTimeMillis(),
                     scheduleTime = if (hasScheduleDateChanged) {
                         calendar.time.time

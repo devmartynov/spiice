@@ -3,11 +3,12 @@ package io.devmartynov.spiice.repository.note
 import io.devmartynov.spiice.db.note.NoteDao
 import io.devmartynov.spiice.model.note.Note
 import java.util.*
+import javax.inject.Inject
 
 /**
  * Репозиторий заметок.
  */
-class NotesRepositoryImpl(private val noteDao: NoteDao) : NotesRepository {
+class NotesRepositoryImpl @Inject constructor(private val noteDao: NoteDao) : NotesRepository {
 
     override suspend fun addNote(note: Note): Boolean {
         noteDao.addNote(note)

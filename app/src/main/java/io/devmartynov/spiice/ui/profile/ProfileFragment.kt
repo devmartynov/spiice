@@ -6,18 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.databinding.FragmentProfileBinding
-import io.devmartynov.spiice.ui.ViewModelFactory
 import io.devmartynov.spiice.ui.auth.LoginFragment
 import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
 
 /**
  * Экран профиля
  */
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
-    private val viewModel: ProfileViewModel by viewModels { ViewModelFactory(null) }
+    private val viewModel: ProfileViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

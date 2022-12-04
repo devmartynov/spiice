@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.databinding.FragmentNotesBinding
 import io.devmartynov.spiice.model.note.Note
-import io.devmartynov.spiice.ui.ViewModelFactory
 import io.devmartynov.spiice.ui.notesList.noteDetailInfo.NoteDetailInfoFragment
 import io.devmartynov.spiice.ui.notesList.noteMenu.NoteMenuFragment
 import io.devmartynov.spiice.ui.notesList.notesAdapter.NotesAdapter
@@ -28,9 +28,10 @@ const val NOTES_FRAGMENT_TAG = "FRAGMENT_TAG"
 /**
  * Экран списка заметок
  */
+@AndroidEntryPoint
 class NotesFragment : Fragment() {
     private lateinit var binding: FragmentNotesBinding
-    private val viewModel: NotesViewModel by viewModels { ViewModelFactory(null) }
+    private val viewModel: NotesViewModel by viewModels()
     private var isSearchFieldOpened = false
     private var inputMethodManager: InputMethodManager? = null
 

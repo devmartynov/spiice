@@ -5,9 +5,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.model.user.User
-import io.devmartynov.spiice.model.user.UserPreferences
+import io.devmartynov.spiice.repository.user.UserPreferencesRepository
 import io.devmartynov.spiice.repository.user.UserRepository
 import io.devmartynov.spiice.utils.FormAttributes
 import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
@@ -17,14 +18,20 @@ import io.devmartynov.spiice.utils.validation.ValidationResult
 import io.devmartynov.spiice.validate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * VM авторизации
  * @param userRepository репозиторий пользователя
+ * @param userPreferencesRepository преференцы пользователя
  * @param application конекст приложения
  */
-class AuthViewModel(private val userRepository: UserRepository, application: Application) : AndroidViewModel(application), Auth, AuthValidation {
-    private val userPreferences = UserPreferences.get()
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val userRepository: UserRepository,
+    private val userPreferencesRepository: UserPreferencesRepository,
+    application: Application
+) : AndroidViewModel(application), Auth, AuthValidation {
     private var _authState = MutableLiveData<AsyncOperationState>(AsyncOperationState.Idle)
     val authState: LiveData<AsyncOperationState> = _authState
 
@@ -45,7 +52,7 @@ class AuthViewModel(private val userRepository: UserRepository, application: App
                     userRepository.addUser(user.copy(
                         token = authToken
                     ))
-                    userPreferences.token = authToken
+                    userPreferencesRepository.token = authToken
                 }
             }
             _authState.postValue(
@@ -78,7 +85,7 @@ class AuthViewModel(private val userRepository: UserRepository, application: App
                     passwordHash = getHashedPassword(password),
                 )
                 userRepository.addUser(newUser)
-                userPreferences.setUserInfo(
+                userPreferencesRepository.setUserInfo(
                     token = newUser.token,
                     email = newUser.email,
                     firstName = newUser.firstName,

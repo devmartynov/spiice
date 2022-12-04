@@ -4,23 +4,27 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.devmartynov.spiice.model.user.UserPreferences
+import dagger.hilt.android.lifecycle.HiltViewModel
+import io.devmartynov.spiice.repository.user.UserPreferencesRepository
 import io.devmartynov.spiice.repository.note.NotesRepository
 import io.devmartynov.spiice.repository.user.UserRepository
 import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * VM профиля
  * @param userRepository репозиторий пользователя
  * @param notesRepository репозиторий заметок
+ * @param userPreferences преференцы пользователя
  */
-class ProfileViewModel(
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val notesRepository: NotesRepository
+    private val notesRepository: NotesRepository,
+    private val userPreferences: UserPreferencesRepository,
 ) : ViewModel() {
-    private val userPreferences = UserPreferences.get()
     private var _gettingNotesCountState = MutableLiveData<AsyncOperationState>(AsyncOperationState.Idle)
     val gettingNotesCountState: LiveData<AsyncOperationState> = _gettingNotesCountState
     private var _deletingProfileState = MutableLiveData<AsyncOperationState>(AsyncOperationState.Idle)

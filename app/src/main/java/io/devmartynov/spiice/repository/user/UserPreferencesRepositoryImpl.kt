@@ -1,15 +1,17 @@
-package io.devmartynov.spiice.model.user
+package io.devmartynov.spiice.repository.user
 
 import android.content.Context
-import io.devmartynov.spiice.ui.auth.AuthState
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.UUID
+import javax.inject.Inject
 
-class UserPreferences private constructor(context: Context) : AuthState {
+class UserPreferencesRepositoryImpl @Inject constructor(
+    @ApplicationContext context: Context
+) : UserPreferencesRepository {
     private val userSettings = context
-        .applicationContext
         .getSharedPreferences(USER_SETTINGS, Context.MODE_PRIVATE)
 
-    var token: String?
+    override var token: String?
         get() = userSettings.getString(USER_TOKEN, null)
         set(token) {
             userSettings.edit()
@@ -23,13 +25,19 @@ class UserPreferences private constructor(context: Context) : AuthState {
     private val lastName: String?
         get() = userSettings.getString(USER_LAST_NAME, "")
 
-    val fullName: String
+    override val fullName: String
         get() = firstName + " " + lastName
 
-    val userId: UUID
+    override val userId: UUID
         get() = UUID.fromString(userSettings.getString(USER_ID, ""))
 
-    fun setUserInfo(token: String, email: String, firstName: String, lastName: String, id: UUID) {
+    override fun setUserInfo(
+        token: String,
+        email: String,
+        firstName: String,
+        lastName: String,
+        id: UUID
+    ) {
         userSettings.edit()
             .putString(USER_TOKEN, token)
             .putString(USER_EMAIL, email)
@@ -39,6 +47,10 @@ class UserPreferences private constructor(context: Context) : AuthState {
             .apply()
     }
 
+    override fun isAuthorized(): Boolean {
+        return token != null
+    }
+
     companion object {
         private const val USER_SETTINGS = "user_settings"
         const val USER_TOKEN = "user_token"
@@ -46,21 +58,5 @@ class UserPreferences private constructor(context: Context) : AuthState {
         const val USER_FIRST_NAME = "user_first_name"
         const val USER_LAST_NAME = "user_last_name"
         const val USER_ID = "user_id"
-
-        private var INSTANCE: UserPreferences? = null
-
-        fun get(): UserPreferences {
-            return INSTANCE ?: throw IllegalStateException("UserPreferences must be initialized")
-        }
-
-        fun initialize(context: Context) {
-            if (INSTANCE == null) {
-                INSTANCE = UserPreferences(context)
-            }
-        }
-    }
-
-    override fun isAuthorized(): Boolean {
-        return token != null
     }
 }
