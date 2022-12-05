@@ -1,7 +1,6 @@
-package io.devmartynov.spiice
+package io.devmartynov.spiice.utils.validation
 
 import io.devmartynov.spiice.utils.FormAttributes
-import io.devmartynov.spiice.utils.validation.ValidationResult
 
 private const val NAME_MIN_LENGTH = 2
 private const val NAME_MAX_LENGTH = 20

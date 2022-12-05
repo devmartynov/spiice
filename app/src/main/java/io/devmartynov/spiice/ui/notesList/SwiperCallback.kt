@@ -81,7 +81,7 @@ class SwiperCallback(
                 var imgLeft = viewHolder.itemView.right
                 val iconHorizontalMargin = TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP, 24f, recyclerView.context.resources.displayMetrics
-                ).toInt();
+                ).toInt()
 
                 if (dX < -iconHorizontalMargin) {
                     val icon = ContextCompat.getDrawable(recyclerView.context, R.drawable.ic_delete)
@@ -121,7 +121,7 @@ class SwiperCallback(
                 }
             }
         } catch (e: Exception) {
-
+            e.printStackTrace()
         }
 
         super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)

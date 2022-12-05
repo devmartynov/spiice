@@ -18,7 +18,7 @@ import io.devmartynov.spiice.databinding.FragmentAddEditNoteBinding
 import io.devmartynov.spiice.model.note.Note
 import io.devmartynov.spiice.ui.notesList.NotesFragment
 import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
-import io.devmartynov.spiice.validate
+import io.devmartynov.spiice.utils.validation.validate
 import java.util.*
 
 /**
