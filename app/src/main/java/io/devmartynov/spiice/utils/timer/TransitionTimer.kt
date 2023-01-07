@@ -9,7 +9,7 @@ class TransitionTimer private constructor(private val delay: Long) : Timer {
 
     override fun start(onTimerOver: callback) {
         stop()
-        timer = java.util.Timer(TIMER_LABEL, false)
+        timer = Timer(TIMER_LABEL, false)
         timer?.schedule(object : TimerTask() {
             override fun run() {
                 onTimerOver.invoke()

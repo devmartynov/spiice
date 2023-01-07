@@ -15,7 +15,7 @@ import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
 import io.devmartynov.spiice.utils.auth.generateToken
 import io.devmartynov.spiice.utils.auth.getHashedPassword
 import io.devmartynov.spiice.utils.validation.ValidationResult
-import io.devmartynov.spiice.validate
+import io.devmartynov.spiice.utils.validation.validate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject

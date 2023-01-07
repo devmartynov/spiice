@@ -26,7 +26,7 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         get() = userSettings.getString(USER_LAST_NAME, "")
 
     override val fullName: String
-        get() = firstName + " " + lastName
+        get() = "$firstName $lastName"
 
     override val userId: UUID
         get() = UUID.fromString(userSettings.getString(USER_ID, ""))
