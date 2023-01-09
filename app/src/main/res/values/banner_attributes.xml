@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BannerView">
+        <attr name="text" format="string"/>
+        <attr name="mode" format="enum">
+            <enum name="SUCCESS" value="0"/>
+            <enum name="WARNING" value="1"/>
+        </attr>
+        <attr name="close_timeout" format="integer"/>
+    </declare-styleable>
+</resources>

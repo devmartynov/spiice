@@ -9,14 +9,12 @@ import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import io.devmartynov.spiice.utils.FormAttributes
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.utils.validation.ValidationResult
 import io.devmartynov.spiice.databinding.FragmentAddEditNoteBinding
 import io.devmartynov.spiice.model.note.Note
-import io.devmartynov.spiice.ui.notesList.NotesFragment
 import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
 import io.devmartynov.spiice.utils.validation.validate
 import java.util.*
@@ -52,15 +50,20 @@ class AddEditNoteFragment : Fragment() {
 
         setUpFormFields()
 
+        binding.banner.setCloseClick { binding.banner.hide() }
+
         noteDetailViewModel.savingState.observe(viewLifecycleOwner) { asyncOperationState ->
             when (asyncOperationState) {
                 is AsyncOperationState.Loading -> {
                 }
                 is AsyncOperationState.Success -> {
-                    goToNotesList()
+                    binding.banner.setText(getString(R.string.note_create_success_message))
+                    binding.banner.show()
+                    clearFields()
                 }
                 is AsyncOperationState.Failure -> {
-                    Toast.makeText(requireContext(), getString(R.string.failure_note_creation_message), Toast.LENGTH_SHORT).show()
+                    binding.banner.setText(getString(R.string.failure_note_creation_message))
+                    binding.banner.show()
                 }
                 is AsyncOperationState.Idle -> {
                 }
@@ -89,17 +92,11 @@ class AddEditNoteFragment : Fragment() {
     }
 
     /**
-     * Переход на экран списка заметок
+     * Очищает поля ввода
      */
-    private fun goToNotesList() {
-        requireActivity()
-            .findViewById<BottomNavigationView>(R.id.bottom_navigation)
-            .menu.findItem(R.id.notes_list).isChecked = true
-
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, NotesFragment())
-            .commit()
+    private fun clearFields() {
+        binding.title.editableText.clear()
+        binding.content.editableText.clear()
     }
 
     /**
