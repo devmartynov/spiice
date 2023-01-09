@@ -52,4 +52,5 @@
     <string name="delete_all_notes">Удалить все заметки</string>
     <string name="notes_count">%d заметки</string>
     <string name="search">Поиск</string>
+    <string name="note_create_success_message">Заметка успешно сохранена</string>
 </resources>
