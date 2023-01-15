@@ -11,6 +11,7 @@ import io.devmartynov.spiice.repository.user.UserRepository
 import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.Error
 import javax.inject.Inject
 
 /**
@@ -46,25 +47,37 @@ class ProfileViewModel @Inject constructor(
         deleteAllNotes()
         _deletingProfileState.value = AsyncOperationState.Loading
         viewModelScope.launch {
-            userRepository.deleteUser(userPreferences.userId)
-            _deletingProfileState.postValue(AsyncOperationState.Success(0))
-            signOut()
+            try {
+                userRepository.deleteUser(userPreferences.userId)
+                _deletingProfileState.postValue(AsyncOperationState.Success(0))
+                signOut()
+            } catch (e: java.lang.Exception) {
+                _deletingProfileState.postValue(AsyncOperationState.Failure(Error(e)))
+            }
         }
     }
 
     fun getNotesCount() {
         _gettingNotesCountState.value = AsyncOperationState.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            val count = notesRepository.getUserNotesCount(userPreferences.userId)
-            _gettingNotesCountState.postValue(AsyncOperationState.Success(count))
+            try {
+                val count = notesRepository.getUserNotesCount(userPreferences.userId)
+                _gettingNotesCountState.postValue(AsyncOperationState.Success(count))
+            } catch (e: java.lang.Exception) {
+                _gettingNotesCountState.postValue(AsyncOperationState.Failure(Error(e)))
+            }
         }
     }
 
     fun deleteAllNotes() {
         _gettingNotesCountState.value = AsyncOperationState.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            notesRepository.deleteAllUserNotes(userPreferences.userId)
-            _gettingNotesCountState.postValue(AsyncOperationState.Success(ZERO_NOTES))
+            try {
+                notesRepository.deleteAllUserNotes(userPreferences.userId)
+                _gettingNotesCountState.postValue(AsyncOperationState.Success(ZERO_NOTES))
+            } catch (e: java.lang.Exception) {
+                _gettingNotesCountState.postValue(AsyncOperationState.Failure(Error(e)))
+            }
         }
     }
 }

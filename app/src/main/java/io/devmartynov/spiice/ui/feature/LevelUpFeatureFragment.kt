@@ -5,17 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import io.devmartynov.spiice.R
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import io.devmartynov.spiice.databinding.FragmentLevelUpFeatureBinding
 import io.devmartynov.spiice.utils.timer.TransitionTimer
-import io.devmartynov.spiice.ui.auth.SignUpFragment
-
-private const val LEVEL_UP_FRAGMENT_TAG = "LEVEL_UP_FRAGMENT_TAG"
 
 /**
- * Экран фичи роста (4/5)
+ * Экран онбординга (фича роста - 4/5)
  */
+@AndroidEntryPoint
 class LevelUpFeatureFragment : Fragment() {
+    private val viewModel: OnboardingViewModel by viewModels()
     private val timer = TransitionTimer.get()
     private lateinit var binding: FragmentLevelUpFeatureBinding
 
@@ -35,7 +36,14 @@ class LevelUpFeatureFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        timer.start(::goToNextScreen)
+        timer.start {
+            requireActivity().runOnUiThread {
+                findNavController().navigate(
+                    LevelUpFeatureFragmentDirections
+                        .actionLevelUpFeatureFragmentToEnjoyFeatureFragment()
+                )
+            }
+        }
     }
 
     override fun onPause() {
@@ -48,27 +56,10 @@ class LevelUpFeatureFragment : Fragment() {
      */
     private fun onSkipClick() {
         timer.stop()
-        goToSignUp()
+        viewModel.setHasOnboardingFinish(hasFinished = true)
+        findNavController().navigate(
+            LevelUpFeatureFragmentDirections.actionLevelUpFeatureFragmentToSignUpFragment()
+        )
     }
 
-    /**
-     * Переход на следующий экран фичи
-     */
-    private fun goToNextScreen() {
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, EnjoyFeatureFragment())
-            .addToBackStack(LEVEL_UP_FRAGMENT_TAG)
-            .commit()
-    }
-
-    /**
-     * Переход на экран регистрации
-     */
-    private fun goToSignUp() {
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, SignUpFragment())
-            .commit()
-    }
 }

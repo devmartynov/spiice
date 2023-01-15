@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/notes_list"
+        android:id="@+id/notesFragment"
         android:enabled="true"
         android:icon="@drawable/ic_notes"
         android:title="@string/notes"/>
     <item
-        android:id="@+id/notes_create"
+        android:id="@+id/addEditNoteFragment"
         android:enabled="true"
         android:icon="@drawable/ic_chat"
         android:title="@string/notes_create"/>
     <item
-        android:id="@+id/profile"
+        android:id="@+id/profileFragment"
         android:enabled="true"
         android:icon="@drawable/ic_account"
         android:title="@string/profile"/>

@@ -5,17 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.databinding.FragmentGreetingsBinding
-import io.devmartynov.spiice.ui.auth.LoginFragment
-import io.devmartynov.spiice.ui.feature.ProjectsFeatureFragment
-
-private const val GREETINGS_FRAGMENT_TAG = "GREETINGS_FRAGMENT_TAG"
 
 /**
  * Приветственный экран приложения в случае, если пользователь не авторизован.
- * @todo реализовать логику авторизации и смены стартового экрана
  */
 class GreetingsFragment : Fragment() {
     private lateinit var binding: FragmentGreetingsBinding
@@ -35,28 +31,11 @@ class GreetingsFragment : Fragment() {
         val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.visibility = View.GONE
 
-        binding.discoverPlatform.setOnClickListener { onDiscoverClick() }
-        binding.logIn.setOnClickListener { onLoginClick() }
-    }
-
-    /**
-     * Обработчик нажатия на кнопку изучения платформы
-     */
-    private fun onDiscoverClick() {
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, ProjectsFeatureFragment())
-            .addToBackStack(GREETINGS_FRAGMENT_TAG)
-            .commit()
-    }
-
-    /**
-     * Обработчик нажатия на кнопку входа
-     */
-    private fun onLoginClick() {
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, LoginFragment())
-            .commit()
+        binding.discoverPlatform.setOnClickListener {
+            findNavController().navigate(R.id.action_greetingsFragment_to_projectsFeatureFragment)
+        }
+        binding.logIn.setOnClickListener {
+            findNavController().navigate(R.id.action_greetingsFragment_to_loginFragment)
+        }
     }
 }
