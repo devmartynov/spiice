@@ -53,4 +53,6 @@
     <string name="notes_count">%d заметки</string>
     <string name="search">Поиск</string>
     <string name="note_create_success_message">Заметка успешно сохранена</string>
+    <string name="get_notes_count_error">Ошибка при получении данных о заметках</string>
+    <string name="delete_profile_error">Ошибка во время удаления профиля</string>
 </resources>

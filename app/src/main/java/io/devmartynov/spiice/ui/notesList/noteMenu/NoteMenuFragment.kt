@@ -5,24 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.databinding.FragmentNoteMenuBinding
 import io.devmartynov.spiice.model.note.Note
-import io.devmartynov.spiice.ui.addEditNote.AddEditNoteFragment
-import io.devmartynov.spiice.ui.notesList.NOTES_FRAGMENT_TAG
-import io.devmartynov.spiice.utils.timer.callback
+import io.devmartynov.spiice.utils.Callback
 
 /**
  * Меню заметки с действиями над ней
  */
 class NoteMenuFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentNoteMenuBinding
-    var note: Note? = null
-    var safeDeleteNote: callback? = null
+    private var note: Note? = null
+    private var safeDeleteNote: Callback? = null
 
     companion object {
-        const val TAG = "NoteMenuFragment"
         private const val SHARE_CONTENT_TYPE = "text/plain"
     }
 
@@ -37,6 +35,9 @@ class NoteMenuFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        note = arguments?.getSerializable("note") as Note
+        safeDeleteNote = arguments?.getSerializable("safeDeleteNote") as Callback
 
         checkArguments()
 
@@ -58,25 +59,17 @@ class NoteMenuFragment : BottomSheetDialogFragment() {
      * Переходит на экран редактирования заметки.
      */
     private fun goToAddEditScreen() {
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, AddEditNoteFragment().apply {
-                this.note = this@NoteMenuFragment.note
-            })
-            .addToBackStack(NOTES_FRAGMENT_TAG)
-            .commit()
+        val action = NoteMenuFragmentDirections
+            .actionNoteMenuFragmentToAddEditNoteFragment(note = note )
+        findNavController().navigate(action)
     }
 
     /**
      * Проверяет наличие всех необходимых данных для рыботы фрагмента
      */
     private fun checkArguments() {
-        if (note == null) {
-            throw IllegalArgumentException("You must pass note to fragment")
-        }
-        if (safeDeleteNote == null) {
-            throw IllegalArgumentException("You must pass safeDeleteNote callback to fragment")
-        }
+        checkNotNull(note) { "You must pass note to fragment" }
+        checkNotNull(safeDeleteNote) { "You must pass safeDeleteNote callback to fragment" }
     }
 
     /**

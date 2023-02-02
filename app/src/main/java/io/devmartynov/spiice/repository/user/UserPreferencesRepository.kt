@@ -6,6 +6,7 @@ interface UserPreferencesRepository {
     var token: String?
     val fullName: String
     val userId: UUID
+    var hasOnboardingFinished: Boolean
 
     fun setUserInfo(token: String, email: String, firstName: String, lastName: String, id: UUID)
 

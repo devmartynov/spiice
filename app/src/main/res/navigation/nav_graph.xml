@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/notesFragment">
+
+    <fragment
+        android:id="@+id/notesFragment"
+        android:name="io.devmartynov.spiice.ui.notesList.NotesFragment"
+        android:label="NotesFragment" >
+        <action
+            android:id="@+id/action_notesFragment_to_noteMenuFragment"
+            app:destination="@id/noteMenuFragment" >
+            <argument
+                android:name="safeDeleteNote"
+                app:argType="io.devmartynov.spiice.utils.Callback"
+                app:nullable="true"
+                android:defaultValue="@null"/>
+            <argument
+                android:name="note"
+                app:argType="io.devmartynov.spiice.model.note.Note"
+                app:nullable="true"
+                android:defaultValue="@null"/>
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/addEditNoteFragment"
+        android:name="io.devmartynov.spiice.ui.addEditNote.AddEditNoteFragment"
+        android:label="AddEditNoteFragment" >
+
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="io.devmartynov.spiice.ui.profile.ProfileFragment"
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="io.devmartynov.spiice.ui.auth.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_notesFragment"
+            app:destination="@id/notesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/greetingsFragment"
+        android:name="io.devmartynov.spiice.ui.GreetingsFragment"
+        android:label="GreetingsFragment" >
+        <action
+            android:id="@+id/action_greetingsFragment_to_projectsFeatureFragment"
+            app:destination="@id/projectsFeatureFragment" />
+        <action
+            android:id="@+id/action_greetingsFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/projectsFeatureFragment"
+        android:name="io.devmartynov.spiice.ui.feature.ProjectsFeatureFragment"
+        android:label="ProjectsFeatureFragment" >
+        <action
+            android:id="@+id/action_projectsFeatureFragment_to_moneyFeatureFragment"
+            app:destination="@id/moneyFeatureFragment" />
+        <action
+            android:id="@+id/action_projectsFeatureFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/moneyFeatureFragment"
+        android:name="io.devmartynov.spiice.ui.feature.MoneyFeatureFragment"
+        android:label="MoneyFeatureFragment" >
+        <action
+            android:id="@+id/action_moneyFeatureFragment_to_chatFeatureFragment"
+            app:destination="@id/chatFeatureFragment" />
+        <action
+            android:id="@+id/action_moneyFeatureFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFeatureFragment"
+        android:name="io.devmartynov.spiice.ui.feature.ChatFeatureFragment"
+        android:label="ChatFeatureFragment" >
+        <action
+            android:id="@+id/action_chatFeatureFragment_to_levelUpFeatureFragment"
+            app:destination="@id/levelUpFeatureFragment" />
+        <action
+            android:id="@+id/action_chatFeatureFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/levelUpFeatureFragment"
+        android:name="io.devmartynov.spiice.ui.feature.LevelUpFeatureFragment"
+        android:label="LevelUpFeatureFragment" >
+        <action
+            android:id="@+id/action_levelUpFeatureFragment_to_enjoyFeatureFragment"
+            app:destination="@id/enjoyFeatureFragment" />
+        <action
+            android:id="@+id/action_levelUpFeatureFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/enjoyFeatureFragment"
+        android:name="io.devmartynov.spiice.ui.feature.EnjoyFeatureFragment"
+        android:label="EnjoyFeatureFragment" >
+        <action
+            android:id="@+id/action_enjoyFeatureFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="io.devmartynov.spiice.ui.auth.SignUpFragment"
+        android:label="SignUpFragment" >
+        <action
+            android:id="@+id/action_signUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_notesFragment"
+            app:destination="@id/notesFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/noteMenuFragment"
+        android:name="io.devmartynov.spiice.ui.notesList.noteMenu.NoteMenuFragment"
+        android:label="NoteMenuFragment" >
+        <action
+            android:id="@+id/action_noteMenuFragment_to_addEditNoteFragment"
+            app:destination="@id/addEditNoteFragment">
+            <argument
+                android:name="note"
+                app:argType="io.devmartynov.spiice.model.note.Note"
+                app:nullable="true"
+                android:defaultValue="@null"/>
+        </action>
+    </dialog>
+</navigation>

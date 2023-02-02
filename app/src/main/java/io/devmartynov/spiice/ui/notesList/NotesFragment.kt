@@ -10,20 +10,18 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.databinding.FragmentNotesBinding
 import io.devmartynov.spiice.model.note.Note
 import io.devmartynov.spiice.ui.notesList.noteDetailInfo.NoteDetailInfoFragment
-import io.devmartynov.spiice.ui.notesList.noteMenu.NoteMenuFragment
 import io.devmartynov.spiice.ui.notesList.notesAdapter.NotesAdapter
+import io.devmartynov.spiice.utils.Callback
 import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
-
-const val NOTES_FRAGMENT_TAG = "FRAGMENT_TAG"
 
 /**
  * Экран списка заметок
@@ -47,12 +45,8 @@ class NotesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val activity = requireActivity()
-
-        inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-
-        val bottomNav = activity.findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNav.visibility = View.VISIBLE
+        inputMethodManager = requireActivity()
+            .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
 
         viewModel.gettingNotesState.observe(viewLifecycleOwner) { notesState ->
             when (notesState) {
@@ -169,12 +163,15 @@ class NotesFragment : Fragment() {
      * @param position позиция заметки в адаптере
      */
     private fun showNoteMenu(note: Note, position: Int) {
-        NoteMenuFragment()
-            .apply {
-                this.note = note
-                safeDeleteNote = { safeDeleteNoteByPosition(position) }
+        val action = NotesFragmentDirections.actionNotesFragmentToNoteMenuFragment(
+            note = note,
+            safeDeleteNote = object : Callback {
+                override fun invoke() {
+                    safeDeleteNoteByPosition(position)
+                }
             }
-            .show(parentFragmentManager, NoteMenuFragment.TAG)
+        )
+        findNavController().navigate(action)
     }
 
     /**

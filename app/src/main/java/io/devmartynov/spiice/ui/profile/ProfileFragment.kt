@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import io.devmartynov.spiice.R
+import io.devmartynov.spiice.buildErrorCauseMessage
 import io.devmartynov.spiice.databinding.FragmentProfileBinding
-import io.devmartynov.spiice.ui.auth.LoginFragment
 import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
 
 /**
@@ -41,6 +43,14 @@ class ProfileFragment : Fragment() {
                     setNotesCount(gettingCountState.data as Long)
                 }
                 is AsyncOperationState.Failure -> {
+                    Toast.makeText(
+                        requireContext(),
+                        buildErrorCauseMessage(
+                            error = getString(R.string.get_notes_count_error),
+                            cause = gettingCountState.error
+                        ),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     setNotesCount(0L)
                 }
                 is AsyncOperationState.Idle -> {
@@ -56,6 +66,14 @@ class ProfileFragment : Fragment() {
                     goToSignIn()
                 }
                 is AsyncOperationState.Failure -> {
+                    Toast.makeText(
+                        requireContext(),
+                        buildErrorCauseMessage(
+                            error = getString(R.string.delete_profile_error),
+                            cause = deletingState.error
+                        ),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 is AsyncOperationState.Idle -> {
                 }
@@ -79,10 +97,9 @@ class ProfileFragment : Fragment() {
      * Переход на экран входа
      */
     private fun goToSignIn() {
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, LoginFragment())
-            .commit()
+        findNavController().navigate(
+            ProfileFragmentDirections.actionProfileFragmentToLoginFragment()
+        )
     }
 
     private fun setNotesCount(count: Long) {

@@ -33,14 +33,18 @@ class NoteDetailViewModel @Inject constructor(
     fun saveNote(note: Note) {
         _savingState.value = AsyncOperationState.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.updateNote(note)
-            _savingState.postValue(
-                if (result) {
-                    AsyncOperationState.Success(true)
-                } else {
-                    AsyncOperationState.Failure(Error("Error was occurred while saving note"))
-                }
-            )
+            try {
+                val result = repository.updateNote(note)
+                _savingState.postValue(
+                    if (result) {
+                        AsyncOperationState.Success(true)
+                    } else {
+                        AsyncOperationState.Failure(Error("Error was occurred while saving note"))
+                    }
+                )
+            } catch (e: java.lang.Exception) {
+                _savingState.postValue(AsyncOperationState.Failure(Error(e)))
+            }
         }
     }
 }

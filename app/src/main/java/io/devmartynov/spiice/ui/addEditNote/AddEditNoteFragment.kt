@@ -12,9 +12,11 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import io.devmartynov.spiice.utils.FormAttributes
 import io.devmartynov.spiice.R
+import io.devmartynov.spiice.buildErrorCauseMessage
 import io.devmartynov.spiice.utils.validation.ValidationResult
 import io.devmartynov.spiice.databinding.FragmentAddEditNoteBinding
 import io.devmartynov.spiice.model.note.Note
+import io.devmartynov.spiice.ui.shared.BannerView
 import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
 import io.devmartynov.spiice.utils.validation.validate
 import java.util.*
@@ -26,7 +28,7 @@ import java.util.*
 class AddEditNoteFragment : Fragment() {
     private lateinit var binding: FragmentAddEditNoteBinding
     private val noteDetailViewModel: NoteDetailViewModel by viewModels()
-    var note: Note? = null
+    private var note: Note? = null
     private var hasScheduleDateChanged = false
     private val calendar = Calendar.getInstance()
     private val datePickerSetListener =
@@ -48,6 +50,8 @@ class AddEditNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        note = arguments?.getSerializable("note") as Note?
+
         setUpFormFields()
 
         binding.banner.setCloseClick { binding.banner.hide() }
@@ -57,12 +61,19 @@ class AddEditNoteFragment : Fragment() {
                 is AsyncOperationState.Loading -> {
                 }
                 is AsyncOperationState.Success -> {
+                    binding.banner.setMode(BannerView.BannerMode.SUCCESS)
                     binding.banner.setText(getString(R.string.note_create_success_message))
                     binding.banner.show()
                     clearFields()
                 }
                 is AsyncOperationState.Failure -> {
-                    binding.banner.setText(getString(R.string.failure_note_creation_message))
+                    binding.banner.setMode(BannerView.BannerMode.WARNING)
+                    binding.banner.setText(
+                        buildErrorCauseMessage(
+                            getString(R.string.failure_note_creation_message),
+                            asyncOperationState.error
+                        )
+                    )
                     binding.banner.show()
                 }
                 is AsyncOperationState.Idle -> {

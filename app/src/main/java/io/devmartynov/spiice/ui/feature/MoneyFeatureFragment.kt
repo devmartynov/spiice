@@ -5,17 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import io.devmartynov.spiice.R
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import io.devmartynov.spiice.databinding.FragmentMoneyFeatureBinding
 import io.devmartynov.spiice.utils.timer.TransitionTimer
-import io.devmartynov.spiice.ui.auth.SignUpFragment
-
-private const val MONEY_FRAGMENT_TAG = "MONEY_FRAGMENT_TAG"
 
 /**
- * Экран фичи заработка (2/5)
+ * Экран онбординга (фича заработка - 2/5)
  */
+@AndroidEntryPoint
 class MoneyFeatureFragment : Fragment() {
+    private val viewModel: OnboardingViewModel by viewModels()
     private val timer = TransitionTimer.get()
     private lateinit var binding: FragmentMoneyFeatureBinding
 
@@ -35,7 +36,13 @@ class MoneyFeatureFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        timer.start(::goToNextScreen)
+        timer.start {
+            requireActivity().runOnUiThread {
+                findNavController().navigate(
+                    MoneyFeatureFragmentDirections.actionMoneyFeatureFragmentToChatFeatureFragment()
+                )
+            }
+        }
     }
 
     override fun onPause() {
@@ -48,27 +55,9 @@ class MoneyFeatureFragment : Fragment() {
      */
     private fun onSkipClick() {
         timer.stop()
-        goToSignUp()
-    }
-
-    /**
-     * Переход на следующий экран фичи
-     */
-    private fun goToNextScreen() {
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, ChatFeatureFragment())
-            .addToBackStack(MONEY_FRAGMENT_TAG)
-            .commit()
-    }
-
-    /**
-     * Переход на экран регистрации
-     */
-    private fun goToSignUp() {
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, SignUpFragment())
-            .commit()
+        viewModel.setHasOnboardingFinish(hasFinished = true)
+        findNavController().navigate(
+            MoneyFeatureFragmentDirections.actionMoneyFeatureFragmentToSignUpFragment()
+        )
     }
 }

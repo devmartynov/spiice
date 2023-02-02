@@ -1,5 +1,6 @@
 package io.devmartynov.spiice.ui.notesList
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,11 +35,15 @@ class NotesViewModel @Inject constructor(
     fun loadNotes() {
        _gettingNotesState.value = AsyncOperationState.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            val list = notesRepository
-                .getUserNotes(userPreferencesRepository.userId)
-                .sortedByDescending { note -> note.createTime }
-            _notes = ArrayList(list)
-            updateGettingNotesState(AsyncOperationState.Success(_notes))
+            try {
+                val list = notesRepository
+                    .getUserNotes(userPreferencesRepository.userId)
+                    .sortedByDescending { note -> note.createTime }
+                _notes = ArrayList(list)
+                updateGettingNotesState(AsyncOperationState.Success(_notes))
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
         }
     }
 

@@ -19,6 +19,14 @@ class UserPreferencesRepositoryImpl @Inject constructor(
                 .apply()
         }
 
+    override var hasOnboardingFinished: Boolean
+        get() = userSettings.getBoolean(USER_ONBOARDING, false)
+        set(value) {
+            userSettings.edit()
+                .putBoolean(USER_ONBOARDING, value)
+                .apply()
+        }
+
     private val firstName: String?
         get() = userSettings.getString(USER_FIRST_NAME, "")
 
@@ -58,5 +66,6 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         const val USER_FIRST_NAME = "user_first_name"
         const val USER_LAST_NAME = "user_last_name"
         const val USER_ID = "user_id"
+        const val USER_ONBOARDING = "user_onboarding"
     }
 }

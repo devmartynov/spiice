@@ -8,13 +8,13 @@ import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import io.devmartynov.spiice.utils.FormAttributes
 import io.devmartynov.spiice.R
 import io.devmartynov.spiice.utils.validation.ValidationResult
 import io.devmartynov.spiice.databinding.FragmentLoginBinding
-import io.devmartynov.spiice.ui.notesList.NotesFragment
 import io.devmartynov.spiice.utils.asyncOperationState.AsyncOperationState
 import io.devmartynov.spiice.utils.text.beautifyListString
 
@@ -54,7 +54,9 @@ class LoginFragment : Fragment() {
                     Toast.makeText(requireContext(), authMessage, Toast.LENGTH_SHORT).show()
 
                     if (!authResult.hasAuthErrors()) {
-                        goToNoteList()
+                        findNavController().navigate(
+                            LoginFragmentDirections.actionLoginFragmentToNotesFragment()
+                        )
                     }
                 }
                 is AsyncOperationState.Failure -> {
@@ -74,7 +76,11 @@ class LoginFragment : Fragment() {
             updateUiErrors(viewModel.validatePassword(it.toString()), FormAttributes.PASSWORD)
         }
         binding.logIn.setOnClickListener { signIn() }
-        binding.signUp.setOnClickListener { goToSignUp() }
+        binding.signUp.setOnClickListener {
+            findNavController().navigate(
+                LoginFragmentDirections.actionLoginFragmentToSignUpFragment()
+            )
+        }
     }
 
     /**
@@ -122,26 +128,5 @@ class LoginFragment : Fragment() {
         if (!emailErrors.hasErrors() && !passwordErrors.hasErrors()) {
             viewModel.signIn(email, password)
         }
-    }
-
-    /**
-     * Переход на экран списка заметок
-     */
-    private fun goToNoteList() {
-        bottomNav?.menu?.findItem(R.id.notes_list)?.isChecked = true
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, NotesFragment())
-            .commit()
-    }
-
-    /**
-     * Переход на экран регистрации
-     */
-    private fun goToSignUp() {
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, SignUpFragment())
-            .commit()
     }
 }
