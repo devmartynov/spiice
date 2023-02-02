@@ -10,35 +10,38 @@
         android:label="NotesFragment" >
         <action
             android:id="@+id/action_notesFragment_to_noteMenuFragment"
-            app:destination="@id/noteMenuFragment" >
+            app:destination="@id/noteMenuFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right">
             <argument
                 android:name="safeDeleteNote"
+                android:defaultValue="@null"
                 app:argType="io.devmartynov.spiice.utils.Callback"
-                app:nullable="true"
-                android:defaultValue="@null"/>
+                app:nullable="true" />
             <argument
                 android:name="note"
+                android:defaultValue="@null"
                 app:argType="io.devmartynov.spiice.model.note.Note"
-                app:nullable="true"
-                android:defaultValue="@null"/>
+                app:nullable="true" />
         </action>
     </fragment>
     <fragment
         android:id="@+id/addEditNoteFragment"
         android:name="io.devmartynov.spiice.ui.addEditNote.AddEditNoteFragment"
-        android:label="AddEditNoteFragment" >
-
-    </fragment>
+        android:label="AddEditNoteFragment" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="io.devmartynov.spiice.ui.profile.ProfileFragment"
         android:label="ProfileFragment" >
         <action
-            android:id="@+id/action_profileFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
-        <action
             android:id="@+id/action_profileFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -46,10 +49,18 @@
         android:label="LoginFragment" >
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
         <action
             android:id="@+id/action_loginFragment_to_notesFragment"
-            app:destination="@id/notesFragment" />
+            app:destination="@id/notesFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
     </fragment>
     <fragment
         android:id="@+id/greetingsFragment"
@@ -57,10 +68,18 @@
         android:label="GreetingsFragment" >
         <action
             android:id="@+id/action_greetingsFragment_to_projectsFeatureFragment"
-            app:destination="@id/projectsFeatureFragment" />
+            app:destination="@id/projectsFeatureFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
         <action
             android:id="@+id/action_greetingsFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
     </fragment>
     <fragment
         android:id="@+id/projectsFeatureFragment"
@@ -68,10 +87,18 @@
         android:label="ProjectsFeatureFragment" >
         <action
             android:id="@+id/action_projectsFeatureFragment_to_moneyFeatureFragment"
-            app:destination="@id/moneyFeatureFragment" />
+            app:destination="@id/moneyFeatureFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
         <action
             android:id="@+id/action_projectsFeatureFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
     </fragment>
     <fragment
         android:id="@+id/moneyFeatureFragment"
@@ -79,10 +106,18 @@
         android:label="MoneyFeatureFragment" >
         <action
             android:id="@+id/action_moneyFeatureFragment_to_chatFeatureFragment"
-            app:destination="@id/chatFeatureFragment" />
+            app:destination="@id/chatFeatureFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
         <action
             android:id="@+id/action_moneyFeatureFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
     </fragment>
     <fragment
         android:id="@+id/chatFeatureFragment"
@@ -90,10 +125,18 @@
         android:label="ChatFeatureFragment" >
         <action
             android:id="@+id/action_chatFeatureFragment_to_levelUpFeatureFragment"
-            app:destination="@id/levelUpFeatureFragment" />
+            app:destination="@id/levelUpFeatureFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
         <action
             android:id="@+id/action_chatFeatureFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left"/>
     </fragment>
     <fragment
         android:id="@+id/levelUpFeatureFragment"
@@ -101,10 +144,18 @@
         android:label="LevelUpFeatureFragment" >
         <action
             android:id="@+id/action_levelUpFeatureFragment_to_enjoyFeatureFragment"
-            app:destination="@id/enjoyFeatureFragment" />
+            app:destination="@id/enjoyFeatureFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
         <action
             android:id="@+id/action_levelUpFeatureFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left"/>
     </fragment>
     <fragment
         android:id="@+id/enjoyFeatureFragment"
@@ -112,7 +163,11 @@
         android:label="EnjoyFeatureFragment" >
         <action
             android:id="@+id/action_enjoyFeatureFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -120,10 +175,18 @@
         android:label="SignUpFragment" >
         <action
             android:id="@+id/action_signUpFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
         <action
             android:id="@+id/action_signUpFragment_to_notesFragment"
-            app:destination="@id/notesFragment" />
+            app:destination="@id/notesFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
     </fragment>
     <dialog
         android:id="@+id/noteMenuFragment"
@@ -131,12 +194,16 @@
         android:label="NoteMenuFragment" >
         <action
             android:id="@+id/action_noteMenuFragment_to_addEditNoteFragment"
-            app:destination="@id/addEditNoteFragment">
+            app:destination="@id/addEditNoteFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right">
             <argument
                 android:name="note"
+                android:defaultValue="@null"
                 app:argType="io.devmartynov.spiice.model.note.Note"
-                app:nullable="true"
-                android:defaultValue="@null"/>
+                app:nullable="true" />
         </action>
     </dialog>
 </navigation>
